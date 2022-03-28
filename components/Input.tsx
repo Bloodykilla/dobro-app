@@ -7,12 +7,23 @@ interface InputProps {
   placeholder: string | undefined,
   hasIcon?: boolean,
   style?:{};
+  inputStyle?: {};
   value: string;
   isSecure?: boolean;
   setValue: (val:string) => void;
+  maxLength?: number
 }
 
-const Input: React.FC<InputProps> = ({ placeholder, style, hasIcon, value, setValue, isSecure }) => {
+const Input: React.FC<InputProps> = ({
+    maxLength, 
+    inputStyle, 
+    placeholder, 
+    style, 
+    hasIcon, 
+    value, 
+    setValue, 
+    isSecure 
+  }) => {
   const [show, setShow] = useState(true);
   const [secure, setSecure] = useState(isSecure);
 
@@ -24,9 +35,10 @@ const Input: React.FC<InputProps> = ({ placeholder, style, hasIcon, value, setVa
         placeholderTextColor="#BEBEBE"
         placeholder={placeholder} 
         secureTextEntry={secure} 
-        style={styles.input}
+        style={[styles.input, inputStyle]}
         value={value}
         onChangeText={setValue}
+        maxLength={maxLength != null ? maxLength : 35}
       />
       {hasIcon
        ? 
@@ -55,7 +67,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   input: {
-    width: '80%',
+    width: '100%',
     padding: 12,
     fontSize: FontSize.regular,
     textAlign: 'left'

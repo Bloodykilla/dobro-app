@@ -4,5 +4,6 @@ export const FontSize = {
   regular: 14,
   label: 16,
   big: 20,
-  large: 22
+  large: 22,
+  hero: 36
 }
