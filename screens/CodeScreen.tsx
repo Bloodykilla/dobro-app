@@ -7,6 +7,7 @@ import Button from '../components/Button';
 import Input from '../components/Input';
 import ScreenContainer from '../components/ScreenContainer';
 import { FontSize } from '../constants/fontSize';
+import { sendVerifyToken } from '../http/Api';
 import { AuthStackParamList } from '../navigation/AuthStackNavigation';
 
 interface CodeScreenProps {
@@ -17,13 +18,20 @@ const CodeScreen: React.FC<CodeScreenProps> = ({ authStack }) => {
   const [code, setCode] = useState('');
   const navigation = useNavigation<typeof authStack>();
   
-  const redirectButtonHandler = () => {
-    if (code != '') {
-      navigation.navigate('Login');
-    } else {
-      Alert.alert('Введіть код для завершення реєстрації.')
+  const redirectButtonHandler = async() => {
+    try {
+      if (code != '') {
+        const {status} = await sendVerifyToken(code);
+        if (status === 200) {
+          navigation.navigate('Login')
+        }
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
+
+  console.log(code);
   
   return (
     <ScreenContainer>
@@ -54,7 +62,7 @@ const CodeScreen: React.FC<CodeScreenProps> = ({ authStack }) => {
       </View>
       <View style={styles.bottomButtonContainer}>
         <View>
-          <Button label='Увійти' buttonAction={() => redirectButtonHandler()} />
+          <Button label='Надіслати код' buttonAction={() => redirectButtonHandler()} />
         </View>
       </View>
     </ScreenContainer>

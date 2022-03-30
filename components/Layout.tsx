@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
+import { Colors } from '../constants/Colors';
 
 interface LayoutProps {
 
@@ -19,9 +20,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
 const styles = StyleSheet.create({
   layout: {
-    flexGrow: 1, 
-    justifyContent: 'center',
-    paddingHorizontal: 16
+    flex: 1,
+    paddingHorizontal: 16,
+    backgroundColor: Colors.white,
+    height: 'auto'
   },
 });
 

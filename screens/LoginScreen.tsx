@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, Alert } from 'react-native';
 import BoldText from '../components/BoldText';
 import Button from '../components/Button';
@@ -6,6 +7,8 @@ import Input from '../components/Input';
 import ScreenContainer from '../components/ScreenContainer';
 import TextButton from '../components/TextButton';
 import { FontSize } from '../constants/fontSize';
+import { Context } from '../context/ContextProvider';
+import { fetchLoginToken } from '../http/Api';
 
 interface LoginScreenProps {
 
@@ -14,13 +17,41 @@ interface LoginScreenProps {
 const LoginScreen: React.FC<LoginScreenProps> = ({}) => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
+  const { setAuth, setStorageKey } = useContext(Context);
+  const [error, setError] = useState('');
 
-  const loginButtonHandler = () => {
-    if (login != '' && password != '') {
-      Alert.alert('Need to write te bussiness logic =(')
-    } else {
-      Alert.alert('Введіть дані для входу в акаунт!')
+  const loginButtonHandler = async() => {
+    const existedKeys = await AsyncStorage.getItem('session_key');
+    try {
+      const token = await fetchLoginToken(login, password);
+      if (
+        token != null && 
+        existedKeys !== null &&  
+        !existedKeys?.includes(token)
+        ) {
+        await AsyncStorage.setItem('last_session', token)
+        await AsyncStorage.setItem('session_key', existedKeys + ',' + token)
+        .then(() => 
+        setStorageKey(token));
+        setAuth(true)
+      }
+      if (token != null && !existedKeys) {
+        await AsyncStorage.setItem('last_session', token)
+        await AsyncStorage.setItem('session_key', token)
+        .then(() => 
+        setStorageKey(token));
+        setAuth(true)
+      }
+      else {
+        setError(token.error);
+      }
+    } catch(error) {
+      console.log(error);
     }
+  };
+
+  const forgotPasswordHandler = () => {
+    Alert.alert('На жаль, ця функція не доступна');
   };
 
   return (
@@ -54,7 +85,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({}) => {
           <TextButton
             style={styles.textButton} 
             text='Забули пароль?' 
-            buttonAction={() => console.log('forgot password button!')}
+            buttonAction={() => forgotPasswordHandler()}
           />
         </View>
       </View>

@@ -15,19 +15,17 @@ interface InputProps {
 }
 
 const Input: React.FC<InputProps> = ({
-    maxLength, 
-    inputStyle, 
-    placeholder, 
-    style, 
-    hasIcon, 
-    value, 
-    setValue, 
-    isSecure 
+  maxLength, 
+  inputStyle, 
+  placeholder, 
+  style, 
+  hasIcon, 
+  value, 
+  setValue, 
+  isSecure 
   }) => {
   const [show, setShow] = useState(true);
   const [secure, setSecure] = useState(isSecure);
-
-  console.log(value);
 
   return (
     <View style={[styles.container, style]}>

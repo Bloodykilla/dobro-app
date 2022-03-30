@@ -6,10 +6,10 @@ import ScreenContainer from '../components/ScreenContainer';
 import PhoneInput from '../components/PhoneInput'
 import { FontSize } from '../constants/fontSize';
 import Button from '../components/Button';
-import TextButton from '../components/TextButton';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { AuthStackParamList } from '../navigation/AuthStackNavigation';
+import { fetchRegistration } from '../http/Api';
 
 interface RegistrationScreenProps {
   authStack: StackNavigationProp<AuthStackParamList>;
@@ -23,18 +23,23 @@ const RegistrationScreen: React.FC<RegistrationScreenProps> = ({ authStack }) =>
   const [confirmPassword, setConfirmPassword] = useState('');
   const [phone, setPhone] = useState('');
   const navigation = useNavigation<typeof authStack>();
+  const [error, setError] = useState('');
 
-  const redirectButtonHandler = (route: string) => {
-    if (route === 'Code' && 
-        name != '' &&
-        surname != '' &&
-        email != '' &&
-        password != '' &&
-        confirmPassword != '' &&
-        phone != '') {
-      navigation.navigate('Code');
-    } else {
-      Alert.alert('Виникла помилка! Спробуйте знову.')
+  const redirectButtonHandler = async(route: string) => {
+
+    try {
+      if (route === 'Code') {
+        const {data, status} = await fetchRegistration(name, surname, email, phone, password, confirmPassword)
+        if (status === 200) {
+          navigation.navigate('Code');
+        } else {
+          setError(data);
+        }
+      } else {
+        Alert.alert('Виникла помилка! Спробуйте знову.')
+      }
+    } catch (error) {
+      console.log(error)
     }
   }
 

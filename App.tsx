@@ -1,14 +1,17 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import AuthNavigator from './navigation/AuthNavigator';
+import ContextProvider from './context/ContextProvider';
 import Navigation from './navigation/Navigation';
 
 export default function App() {
+  let user = false;
 
 	return (
-    <View style={{ flex: 1 }}>
-      <AuthNavigator />
-    </View>
+    <ContextProvider>
+      <View style={{ flex: 1 }}>
+        <Navigation />
+      </View>
+    </ContextProvider>
   );
 }
 
