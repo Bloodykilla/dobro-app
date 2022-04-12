@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { HomeStackNavigator, PaymentHistoryStackNavigator, ProfileStackNavigator } from './StackNavigaton';
 
-export type MainTabParamList = {
+export type HomeTabParamList = {
   HomeTab: object | undefined;
   PaymentHistoryTab: object | undefined;
   ProfileTab: object | undefined;
@@ -13,7 +13,7 @@ interface TabNavigatorProps {
 
 }
 
-const Tab = createBottomTabNavigator<MainTabParamList>();
+const Tab = createBottomTabNavigator<HomeTabParamList>();
 
 const TabNavigator: React.FC<TabNavigatorProps> = ({}) => {
 

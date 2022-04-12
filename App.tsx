@@ -1,10 +1,20 @@
-import React from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import ContextProvider from './context/ContextProvider';
 import Navigation from './navigation/Navigation';
 
 export default function App() {
-  let user = false;
+  
+   const getKeyFromStorage = async() => {
+    let key = await AsyncStorage.getItem('session_key');
+    console.log('security token: ',key);
+    return key;
+  };
+
+  useEffect(() => {
+    getKeyFromStorage();
+  }, [])
 
 	return (
     <ContextProvider>

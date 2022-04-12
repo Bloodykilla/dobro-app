@@ -1,10 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import MapView from 'react-native-maps';
 import CustomMarker from '../components/CustomMarker';
 import { Colors } from '../constants/Colors';
+import { Context } from '../context/ContextProvider';
+import { NeedyPerson } from '../models/NeedyPerson';
 import { HomeStackParamList } from '../navigation/StackNavigaton';
 
 interface HomeScreenProps {
@@ -12,29 +14,53 @@ interface HomeScreenProps {
 }
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ homeStack }) => {
+  const { needyPerson, loading } = useContext(Context);
   const navigation = useNavigation<typeof homeStack>();
+  const [needyArray, setNeedyArray] = useState([NeedyPerson]);
 
-  const markerHandler = () => {
-    navigation.navigate('NeedyPerson');
+  useEffect(() => {
+    if (needyPerson && !loading) {
+      setNeedyArray(needyPerson);
+    }
+  })
+
+  const markerHandler = (item: typeof NeedyPerson) => {
+    if (item) {
+      navigation.navigate('NeedyPerson',{
+        needyPerson: item
+      })
+    } else {
+      return;
+    }
   }
 
   return (
     <View style={styles.container}>
       <MapView
-        style={styles.map}     
+        style={styles.map}
+        initialRegion={{
+          latitude: 46.48164033135742, 
+          longitude:  30.726885423942463,
+          latitudeDelta: 0,
+          longitudeDelta: 0
+        }}
       >
-        <CustomMarker
-          latitude={46.474777543324684}
-          longitude={30.741367888669856}
-          imgPath='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCn6USmgH1wGZLBDIORQceww5BLFaQRsGsow&usqp=CAU'
-          buttonAction={() => markerHandler()}
-        />
-        <CustomMarker
-          latitude={33.9277751910201}
-          longitude={35.635215548733754}
-          imgPath='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCn6USmgH1wGZLBDIORQceww5BLFaQRsGsow&usqp=CAU'
-          buttonAction={() => markerHandler()}
-        />
+        {needyArray.length > 0 ? (
+          <>
+          {needyArray?.map((item, index) => (
+            <CustomMarker 
+              key={index}
+              latitude={item?.address?.latitude}
+              longitude={item?.address?.longitude}
+              imgPath={item?.imageLink}
+              buttonAction={() => markerHandler(item)}
+            />
+            ))
+          }
+          </>
+        )
+        : null
+        }
       </MapView>
     </View>
   );

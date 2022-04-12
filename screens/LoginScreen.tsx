@@ -22,33 +22,37 @@ const LoginScreen: React.FC<LoginScreenProps> = ({}) => {
 
   const loginButtonHandler = async() => {
     const existedKeys = await AsyncStorage.getItem('session_key');
+    
     try {
-      const token = await fetchLoginToken(login, password);
+      const { data, result, status } = await fetchLoginToken(login, password);
+      console.log( data.securityToken, result, status)
       if (
-        token != null && 
-        existedKeys !== null &&  
-        !existedKeys?.includes(token)
+          data.securityToken && result === 'Success' && 
+          existedKeys != null &&  
+          !existedKeys?.includes(data.securityToken)
         ) {
-        await AsyncStorage.setItem('last_session', token)
-        await AsyncStorage.setItem('session_key', existedKeys + ',' + token)
+        await AsyncStorage.setItem('last_session', data.securityToken)
+        await AsyncStorage.setItem('session_key', existedKeys + ',' + data.securityToken)
         .then(() => 
-        setStorageKey(token));
+        setStorageKey(data.securityToken));
         setAuth(true)
       }
-      if (token != null && !existedKeys) {
-        await AsyncStorage.setItem('last_session', token)
-        await AsyncStorage.setItem('session_key', token)
+      if (data.securityToken && result === 'Success' && !existedKeys) {
+        await AsyncStorage.setItem('last_session', data.securityToken)
+        await AsyncStorage.setItem('session_key', data.securityToken)
         .then(() => 
-        setStorageKey(token));
+        setStorageKey(data.securityToken));
         setAuth(true)
       }
-      else {
-        setError(token.error);
+      if (result === 'Fail') {
+        setError('Сталася помилка!');
       }
     } catch(error) {
       console.log(error);
     }
   };
+
+  console.log(error);
 
   const forgotPasswordHandler = () => {
     Alert.alert('На жаль, ця функція не доступна');

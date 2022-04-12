@@ -20,10 +20,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
 const styles = StyleSheet.create({
   layout: {
-    flex: 1,
     paddingHorizontal: 16,
     backgroundColor: Colors.white,
-    height: 'auto'
   },
 });
 

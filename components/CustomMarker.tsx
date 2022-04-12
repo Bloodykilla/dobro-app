@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 import { Colors } from '../constants/Colors';
 import { Marker } from 'react-native-maps';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { FontSize } from '../constants/fontSize';
 
 interface CustomMarkerProps {
   latitude: number | undefined;
@@ -25,16 +26,20 @@ const CustomMarker: React.FC<CustomMarkerProps> = ({ buttonAction, latitude, lon
         >
           <View style={styles.circle}>
             <View style={styles.stroke} />
-            {imgPath != null ? (
+            {imgPath ? (
               <View style={styles.imageContainer}>
                 <Image
-                  source={{uri: imgPath}} 
+                  source={imgPath ? {uri: imgPath} : {uri: 'https://www.google.com'}} 
                   style={{width: 30, height: 30, position: 'absolute', top: 0}}
                 />
               </View>
             )
             :
-             <View style={styles.core} />
+             <View style={styles.core}>
+                <View style={styles.smileContainer}>
+                 <Text style={styles.smile}>:)</Text>
+               </View>
+             </View>
             }
           </View>
         </Marker>
@@ -67,8 +72,10 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 50,
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.red,
     position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   imageContainer: {
     width: 32,
@@ -78,6 +85,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute'
+  },
+  smileContainer: {
+    justifyContent:'center',
+    alignItems:'center'
+  },
+  smile: {
+    textAlign: 'center',
+    fontSize: FontSize.label,
+    color: Colors.white,
+    padding: 0,
+    fontWeight: '600'
   }
 });
 

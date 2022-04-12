@@ -1,12 +1,14 @@
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import Button from '../components/Button';
 import ScreenContainer from '../components/ScreenContainer';
 import TextButton from '../components/TextButton';
 import { Colors } from '../constants/Colors';
 import { FontSize } from '../constants/fontSize';
+import { Context } from '../context/ContextProvider';
+import { NeedyPerson } from '../models/NeedyPerson';
 import { AuthStackParamList } from '../navigation/AuthStackNavigation';
 
 interface MainScreenProps {
@@ -46,14 +48,20 @@ const MainScreen: React.FC<MainScreenProps> = ({ authStack }) => {
       </View>
       <View style={styles.bottomButtonsContainer}>
         <View style={styles.loginButtonContainer}>
-          <Button label='Увійти' buttonAction={() => redirectButtonHandler('Login')} />
+          <Button
+            label='Увійти' 
+            buttonAction={() => redirectButtonHandler('Login')} 
+          />
         </View>
         <View style={styles.textButtonContainer}>
           <View style={styles.buttonPadding}>
             <Text>Не має акаунту?</Text>
           </View>
           <View style={styles.buttonPadding}>
-            <TextButton text="Зареєструватися" buttonAction={() => redirectButtonHandler('Registration')} />
+            <TextButton
+              text="Зареєструватися" 
+              buttonAction={() => redirectButtonHandler('Registration')} 
+            />
           </View>
         </View>
       </View>

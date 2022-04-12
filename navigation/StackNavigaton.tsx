@@ -12,11 +12,13 @@ import SettingsScreen from '../screens/SettingsScreen';
 import AchievemntScreen from '../screens/AchievemntScreen';
 import AboutScreen from '../screens/AboutScreen';
 import DonateScreen from '../screens/DonateScreen';
+import ThankYouPage from '../screens/ThankYouPage';
 
 export type HomeStackParamList = {
   Home: object | undefined;
   NeedyPerson: object | undefined;
   Payment: object | undefined;
+  Thanks: object | undefined;
 };
 
 export type PaymentsStackParamList = {
@@ -93,6 +95,15 @@ export const HomeStackNavigator = () => {
           ...mainScreenOptions,
         }}
       />  
+
+      <HomeStackScreen.Screen
+        name="Thanks"
+        component={ThankYouPage}
+        options={{
+          title: 'Допомога',
+          ...mainScreenOptions
+        }}
+      />
 
     </HomeStackScreen.Navigator>
   )
