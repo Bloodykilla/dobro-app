@@ -13,18 +13,29 @@ interface NeedyCardProps {
 const NeedyCard: React.FC<NeedyCardProps> = ({ title, rest, currentProgress }) => {
   
   return (
-    <View style={styles.container}>
-      <View>
-        <Text style={styles.title}>{title}</Text>
+    <>
+    {rest && rest > 0 ? (
+      <View style={styles.container}>
+        <View>
+          <Text style={styles.title}>{title}</Text>
+        </View>
+        <View>
+          <Text style={styles.subTitle}>Залишилося зібрати</Text>
+        </View>
+        <View>
+          <Text style={styles.rest}>{rest} грн.</Text>
+            <ProgressBar progress={currentProgress} style={styles.progress} />
+        </View>
       </View>
-      <View>
-        <Text style={styles.subTitle}>Залишилося зібрати</Text>
+    )
+    :
+      <View style={styles.oulineContainer}>
+        <View>
+          <Text style={styles.outlineTitle}>Активний збір відсутній.</Text>
+        </View>
       </View>
-      <View>
-        <Text style={styles.rest}>{rest} грн.</Text>
-        <ProgressBar progress={currentProgress} style={styles.progress} />
-      </View>
-    </View>
+    }
+    </>
   );
 }
 
@@ -37,6 +48,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 38,
     paddingHorizontal: 17
+  },
+  oulineContainer: {
+    width: '100%',
+    borderRadius: 8,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    paddingVertical: 38,
+    paddingHorizontal: 17,
+  },
+  outlineTitle: {
+    fontWeight: '400',
+    fontSize: FontSize.label,
+    color: Colors.textGrey,
+    textAlign: 'center'
   },
   title: {
     fontWeight: '400',

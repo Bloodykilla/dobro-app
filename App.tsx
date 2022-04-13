@@ -6,15 +6,15 @@ import Navigation from './navigation/Navigation';
 
 export default function App() {
   
-   const getKeyFromStorage = async() => {
-    let key = await AsyncStorage.getItem('session_key');
-    console.log('security token: ',key);
-    return key;
-  };
+  //  const getKeyFromStorage = async() => {
+  //   let key = await AsyncStorage.getItem('session_key');
+  //   console.log('security token: ',key);
+  //   return key;
+  // };
 
-  useEffect(() => {
-    getKeyFromStorage();
-  }, [])
+  // useEffect(() => {
+  //   getKeyFromStorage();
+  // }, [])
 
 	return (
     <ContextProvider>

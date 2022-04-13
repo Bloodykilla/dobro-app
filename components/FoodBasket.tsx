@@ -11,22 +11,36 @@ interface FoodBasketProps {
 const FoodBasket: React.FC<FoodBasketProps> = ({ foodRest, foodDesc }) => {
   
   return (
-    <View>
-      <View style={styles.textContainer}>
-        <Text style={styles.text}>{foodDesc}</Text>
+    <>
+    {foodRest && foodRest > 0 ? (
+      <View>
+        <View style={styles.textContainer}>
+          <Text style={styles.text}>{foodDesc}</Text>
+        </View>
+        <View style={styles.basketContainer}>
+          <View style={styles.imageContainer}>
+            <Image source={require('../assets/images/basket.png')} />
+          </View>
+          <View style={styles.boldTextContainer}>
+            <Text style={styles.boldText}>{foodRest} грн.</Text>
+          </View>
+          <View>
+            <Text style={styles.smallText}>Залишилося зібрати в цьому місяці</Text>
+          </View>
+        </View>
       </View>
-      <View style={styles.basketContainer}>
-        <View style={styles.imageContainer}>
-          <Image source={require('../assets/images/basket.png')} />
-        </View>
-        <View style={styles.boldTextContainer}>
-          <Text style={styles.boldText}>{foodRest} грн.</Text>
-        </View>
-        <View>
-          <Text style={styles.smallText}>Залишилося зібрати в цьому місяці</Text>
+    )
+    :
+      <View>
+        <View style={styles.basketContainer}>
+          <View>
+            <Text style={styles.outOfRestBold}>Продуктовий кошик відстуній.</Text>
+          </View>
         </View>
       </View>
-    </View>
+    }
+    </>
+
   );
 }
 
@@ -51,6 +65,13 @@ const styles = StyleSheet.create({
   imageContainer: {
     flexDirection: 'row',
     justifyContent: 'center'
+  },
+  outOfRestBold: {
+    fontSize: FontSize.label,
+    color: Colors.textGrey,
+    textAlign: 'center',
+    paddingVertical: 20,
+    fontWeight: '400'
   },
   boldTextContainer: {
     paddingTop: 20

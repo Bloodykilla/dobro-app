@@ -81,25 +81,7 @@ export const fetchNeedyPersons = async(
       Authorization: `Bearer ${token || key}` 
     }
   })
-  return response
-}
-
-export const peyForNeeds = async(
-  token: string
-  ) => {
-  let key = await AsyncStorage.getItem('last_session');
-  const { data:response } = await axios({
-    url: Api.url + Api.customer + '/addpayment/',
-    method: 'post',
-    data: {
-      needId: '36d33051-4fdc-4dff-8ea7-08da13da1519',
-      sum: 200
-    },
-    headers: { 
-      Authorization: `Bearer ${token || key}` 
-    }
-  })
-  console.log(response);
+  console.log(response.data);
   return response
 }
 
@@ -117,4 +99,16 @@ export const payForNeeds = async(needId: string, mount: number, token: string) =
     }
   })
   return response
+}
+
+export const fetchCustomerPayments = async(token: string) => {
+  let key = await AsyncStorage.getItem('last_session');
+  const {data:response} = await axios({
+    url: Api.url + Api.customer + '/getmypayments/',
+    method: 'get',
+    headers: {
+      Authorization: `Bearer ${token|| key}`
+    }
+  })
+  return response;
 }

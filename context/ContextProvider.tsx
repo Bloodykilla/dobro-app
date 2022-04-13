@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { fetchNeedyPersons } from '../http/Api';
+import { fetchCustomerPayments, fetchNeedyPersons } from '../http/Api';
 import { NeedyPerson } from '../models/NeedyPerson';
+import { PaymentItem } from '../models/PaymentItem';
 
 
 interface ContextProviderProps {
@@ -11,7 +12,8 @@ export const Context = createContext({
   auth: false,
   needyPerson: [NeedyPerson],
   loading: false,
-  storageKey: ''
+  storageKey: '',
+  customerPayments: PaymentItem
 });
 
 const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
@@ -19,11 +21,12 @@ const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [storageKey, setStorageKey] = useState('');
   const [needyPerson, setNeedyPerson] = useState([NeedyPerson]);
+  const [customerPayments, setCustomerPayment] = useState(PaymentItem);
 
   const getNeedyPersons = async() => {
     try {
       setLoading(true);
-      const {data} = await fetchNeedyPersons(storageKey, 'Одеса', 2);
+      const {data} = await fetchNeedyPersons(storageKey, 'Одеса', 12);
       if (data) {
         setNeedyPerson(data);
         setLoading(false);
@@ -33,8 +36,22 @@ const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
     }
   }
 
+  const getCutomerPayments = async() => {
+    try {
+      setLoading(true);
+      const {data} = await fetchCustomerPayments(storageKey);
+      if (data) {
+        setCustomerPayment(data);
+        setLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
-    getNeedyPersons()
+    getNeedyPersons();
+    getCutomerPayments();
   }, [auth])
 
   return (
@@ -45,7 +62,8 @@ const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
       setLoading,
       storageKey,
       setStorageKey,
-      needyPerson
+      needyPerson,
+      customerPayments
     }}>
       {children}
     </Context.Provider>
