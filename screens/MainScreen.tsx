@@ -7,8 +7,6 @@ import ScreenContainer from '../components/ScreenContainer';
 import TextButton from '../components/TextButton';
 import { Colors } from '../constants/Colors';
 import { FontSize } from '../constants/fontSize';
-import { Context } from '../context/ContextProvider';
-import { NeedyPerson } from '../models/NeedyPerson';
 import { AuthStackParamList } from '../navigation/AuthStackNavigation';
 
 interface MainScreenProps {
@@ -35,11 +33,11 @@ const MainScreen: React.FC<MainScreenProps> = ({ authStack }) => {
       </View>
       <View>
         <View>
-          <Text style={styles.boldText}>Добро — це</Text>
+          <Text style={styles.boldText}>Добро</Text>
         </View>
         <View style={styles.regularTextContainer}>
           <Text style={styles.regularText}>
-            соціальний додаток,
+            Це соціальний додаток,
             котрий націлений на допомогу 
             нужденним людям та покращення 
             їх якості життя.
@@ -75,7 +73,7 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 50
+    marginBottom: 30
   },
   boldText: {
     fontWeight: 'bold',
@@ -85,7 +83,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   regularTextContainer: {
-    paddingTop: 30
+    paddingTop: 15
   },
   regularText: {
     fontWeight: "500",
@@ -105,7 +103,7 @@ const styles = StyleSheet.create({
   textButtonContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    paddingVertical: 25
+    paddingVertical: 15
   },
   buttonPadding: {
     paddingHorizontal: 6

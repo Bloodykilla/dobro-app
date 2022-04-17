@@ -30,7 +30,9 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ route, mainStack }) => {
   console.log(person?.currentNeed?.id);
 
   const payForCurrentNeed = async() => {
-    let needId = activeNeedOption === 1 ? person?.currentNeed?.id: person?.basketNeed?.id;
+    let needId = activeNeedOption === 1 ? 
+    person?.currentNeed?.id : 
+    person?.basketNeed?.id;
     try {
       if (+mount > 0) {
         const {data} = await payForNeeds(needId, +mount, storageKey);
@@ -49,7 +51,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ route, mainStack }) => {
 
   return (
     <View style={styles.container}>
-      <View>
+      <View style={styles.warningTextContainer}>
         <Text style={styles.warningText}>
           Памʼятайте! Кожен раз, коли ви 
           допомагаєте нужденній людині, 
@@ -160,12 +162,20 @@ const styles = StyleSheet.create({
   initialsContainer: {
     paddingVertical: 4
   },
+  warningTextContainer: {
+    borderWidth: 1,
+    borderColor: Colors.black,
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 20,
+    marginVertical: 50,
+    backgroundColor: Colors.black
+  },
   warningText: {
     textAlign: 'center',
-    fontWeight: '400', 
-    fontSize: FontSize.label, 
-    marginVertical: 30,
-    color: Colors.black
+    fontWeight: '500', 
+    fontSize: FontSize.regular, 
+    color: Colors.white
   },
   restText: {
     fontSize: FontSize.label,

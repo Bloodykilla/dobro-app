@@ -72,8 +72,8 @@ export const fetchNeedyPersons = async(
   let key = await AsyncStorage.getItem('last_session');
   const { data:response } = await axios({
     url: Api.url + Api.customer + '/getpersons/',
-    method: 'post',
-    data: {
+    method: 'get',
+    params: {
       city: city,
       quantity: quantity
     },
@@ -81,7 +81,7 @@ export const fetchNeedyPersons = async(
       Authorization: `Bearer ${token || key}` 
     }
   })
-  console.log(response.data);
+  console.log('needy persons: ', response.data);
   return response
 }
 
@@ -101,11 +101,14 @@ export const payForNeeds = async(needId: string, mount: number, token: string) =
   return response
 }
 
-export const fetchCustomerPayments = async(token: string) => {
+export const fetchCustomerPayments = async(token: string, timecode: number) => {
   let key = await AsyncStorage.getItem('last_session');
   const {data:response} = await axios({
     url: Api.url + Api.customer + '/getmypayments/',
     method: 'get',
+    params: {
+      timecode: timecode
+    },
     headers: {
       Authorization: `Bearer ${token|| key}`
     }

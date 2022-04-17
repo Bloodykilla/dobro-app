@@ -4,6 +4,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import BoldText from '../components/BoldText';
 import Button from '../components/Button';
+import ScreenContainer from '../components/ScreenContainer';
 import { Colors } from '../constants/Colors';
 import { HomeStackParamList } from '../navigation/StackNavigaton';
 
@@ -19,7 +20,7 @@ const ThankYouPage: React.FC<ThankYouPageProps> = ({ homeStack }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <ScreenContainer>
       <View>
         <BoldText>Дякуємо!</BoldText>
         <Text style={styles.regularText}>
@@ -31,7 +32,7 @@ const ThankYouPage: React.FC<ThankYouPageProps> = ({ homeStack }) => {
       </View>
       <View style={styles.imageContainer}>
         <Image
-          source={require('../assets/images/hugging-face.png')} 
+          source={require('../assets/images/face-hearts.png')} 
           style={styles.imageStyle} 
         />
       </View>
@@ -42,7 +43,7 @@ const ThankYouPage: React.FC<ThankYouPageProps> = ({ homeStack }) => {
           buttonAction={() => redirectButtonHandler()} 
         />
       </View>
-    </View>
+    </ScreenContainer>
   );
 }
 
@@ -66,10 +67,10 @@ const styles = StyleSheet.create({
   imageContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginVertical: 30
+    marginVertical: 75
   },
   buttonContainer: {
-    marginVertical: 40
+
   }
 });
 

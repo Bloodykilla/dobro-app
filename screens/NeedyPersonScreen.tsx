@@ -188,7 +188,8 @@ const styles = StyleSheet.create({
     fontSize: FontSize.regular,
     fontWeight: '500',
     color: Colors.black,
-    paddingBottom: 8
+    paddingBottom: 8,
+    textAlign: 'center'
   },
   smileImage: {
     width: 40,

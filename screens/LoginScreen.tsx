@@ -44,15 +44,13 @@ const LoginScreen: React.FC<LoginScreenProps> = ({}) => {
         setStorageKey(data.securityToken));
         setAuth(true)
       }
-      if (result === 'Fail') {
-        setError('Сталася помилка!');
+      else {
+        Alert.alert('Сталася помилка!');
       }
     } catch(error) {
       console.log(error);
     }
   };
-
-  console.log(error);
 
   const forgotPasswordHandler = () => {
     Alert.alert('На жаль, ця функція не доступна');

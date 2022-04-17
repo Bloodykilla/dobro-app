@@ -36,22 +36,10 @@ const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
     }
   }
 
-  const getCutomerPayments = async() => {
-    try {
-      setLoading(true);
-      const {data} = await fetchCustomerPayments(storageKey);
-      if (data) {
-        setCustomerPayment(data);
-        setLoading(false);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   useEffect(() => {
-    getNeedyPersons();
-    getCutomerPayments();
+    if (auth) {
+      getNeedyPersons();
+    }
   }, [auth])
 
   return (
@@ -63,7 +51,8 @@ const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
       storageKey,
       setStorageKey,
       needyPerson,
-      customerPayments
+      customerPayments,
+      setCustomerPayment
     }}>
       {children}
     </Context.Provider>

@@ -1,12 +1,26 @@
-import React from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
+import Button from '../components/Button';
 import Layout from '../components/Layout';
+import { Context } from '../context/ContextProvider';
 
 interface ProfileScreenProps {
 
 }
 
 const ProfileScreen: React.FC<ProfileScreenProps> = ({}) => {
+  const { setAuth } = useContext(Context);
+
+  const logoutUserHandler = async() => {
+    try {
+      await AsyncStorage.clear().then(() => {
+        setAuth(false);
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  }
   
   return (
     <Layout style={{flex: 1, justifyContent: 'center'}}>
@@ -22,7 +36,10 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({}) => {
         </View>
         <View>
           <View>
-
+            <Button label='Вийти' buttonAction={() => {
+              logoutUserHandler()
+              }}
+            />
           </View>
         </View>
       </View>

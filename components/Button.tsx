@@ -6,13 +6,14 @@ import { FontSize } from '../constants/fontSize';
 interface ButtonProps {
   label: string | null;
   buttonAction: () => void;
+  style?: {};
 }
 
-const Button: React.FC<ButtonProps> = ({ label, buttonAction }) => {
+const Button: React.FC<ButtonProps> = ({ label, buttonAction, style }) => {
 
   return (
     <TouchableOpacity
-      style={styles.container}
+      style={[styles.container, style]}
       onPress={() => buttonAction()}>
       <Text style={styles.buttonLabel}
       >
