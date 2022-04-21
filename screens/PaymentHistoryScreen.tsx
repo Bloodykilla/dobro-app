@@ -8,44 +8,20 @@ import { Colors } from '../constants/Colors';
 import TextButton from '../components/TextButton';
 import ModalMenu from '../components/ModalMenu';
 import { FontSize } from '../constants/fontSize';
-import { fetchCustomerPayments } from '../http/Api';
 import RadioButton from '../components/RadioButton';
 import { timeCodeOptions } from '../constants/TimeCodeOptions';
 import Button from '../components/Button';
+import { PaymentItemModel } from '../models/PaymentItem';
+import Preloader from '../components/Preloader';
 interface PaymentHistoryScreenProps {
 
 }
 
 const PaymentHistoryScreen: React.FC<PaymentHistoryScreenProps> = ({}) => {
-  const { loading, setLoading, storageKey } = useContext(Context); 
+  const { loading, customerPayments, setActiveTimecodeOption } = useContext(Context); 
   const openMenuRef = useRef();
   const [isActive, setActive] = useState<null | number>(0);
-  const [activeMenuOption, setActiveMenuOption] = useState<null | number>(null);
-  const [paymentItems, setPaymentitems] = useState([
-    {
-      dateTime: '',
-      need: "",
-      person: {
-        fName: '',
-        pName: '',
-        sName: '',
-      },
-      sum: 0,
-    }
-  ]);
-
-  const getCutomerPayments = async() => {
-    try {
-      setLoading(true);
-      const {data} = await fetchCustomerPayments(storageKey, activeMenuOption);
-      if (data) {
-        setPaymentitems(data?.paymentsList);
-        setLoading(false);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  const [paymentItems, setPaymentitems] = useState(PaymentItemModel.paymentsList);
 
   const openMenuHandler = () => {
     openMenuRef?.current?.open();
@@ -56,16 +32,16 @@ const PaymentHistoryScreen: React.FC<PaymentHistoryScreenProps> = ({}) => {
   };
 
   const setActiveOptionHandler = () => {
-    setActiveMenuOption(isActive);
+    setActiveTimecodeOption(isActive);
   }
 
   useEffect(() => {
-    getCutomerPayments()
-  }, [activeMenuOption]);
+    if (customerPayments && !loading) {
+      setPaymentitems(customerPayments);
+    }
+  })
 
-  console.log('paymenT ITEMS: ', paymentItems);
-
-  return (
+   return (
     <Layout>
       {paymentItems && !loading ? (
         <View style={styles.container}>
@@ -121,9 +97,8 @@ const PaymentHistoryScreen: React.FC<PaymentHistoryScreenProps> = ({}) => {
         </View>
       )
       :
-        null
+        <Preloader />
       }
-
     </Layout>
   );
 }
@@ -142,7 +117,7 @@ const styles = StyleSheet.create({
     fontSize: FontSize.label
   },
   filterButton: {
-    marginTop: '20%'
+    marginTop: '15%'
   }
 });
 

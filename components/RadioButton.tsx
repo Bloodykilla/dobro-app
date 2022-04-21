@@ -39,9 +39,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     borderRadius: 100,
     backgroundColor: Colors.white,
-    width: 24,
-    height: 24,
-    borderWidth: 2,
+    width: 25,
+    height: 25,
+    borderWidth: 3,
     borderColor: Colors.white
   },
   circleWrapper: {

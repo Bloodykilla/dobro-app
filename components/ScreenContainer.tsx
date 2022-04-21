@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { Colors } from '../constants/Colors';
 
 interface ScreenContainerProps {
@@ -9,9 +9,12 @@ interface ScreenContainerProps {
 const ScreenContainer: React.FC<ScreenContainerProps> = ({ children }) => {
   
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior="position"
+    >
       {children}
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 

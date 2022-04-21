@@ -3,6 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import Button from '../components/Button';
+import Layout from '../components/Layout';
 import ScreenContainer from '../components/ScreenContainer';
 import TextButton from '../components/TextButton';
 import { Colors } from '../constants/Colors';
@@ -25,23 +26,30 @@ const MainScreen: React.FC<MainScreenProps> = ({ authStack }) => {
   }
   
 	return (
-    <ScreenContainer>
-      <View style={styles.imageContainer}>
-        <View>
-          <Image source={require('../assets/images/hero.png')} width={75} />
+    <Layout style={{flex: 1}}>
+      <View style={{
+        flex: 1,
+          justifyContent: 'center',
+          marginTop: '50%'
+        }}
+      >
+        <View style={styles.imageContainer}>
+          <View>
+            <Image source={require('../assets/images/hero.png')} width={75} />
+          </View>
         </View>
-      </View>
-      <View>
         <View>
-          <Text style={styles.boldText}>Добро</Text>
-        </View>
-        <View style={styles.regularTextContainer}>
-          <Text style={styles.regularText}>
-            Це соціальний додаток,
-            котрий націлений на допомогу 
-            нужденним людям та покращення 
-            їх якості життя.
-          </Text>
+          <View>
+            <Text style={styles.boldText}>Добро</Text>
+          </View>
+          <View style={styles.regularTextContainer}>
+            <Text style={styles.regularText}>
+              Це соціальний додаток,
+              котрий націлений на допомогу 
+              нужденним людям та покращення 
+              їх якості життя.
+            </Text>
+          </View>
         </View>
       </View>
       <View style={styles.bottomButtonsContainer}>
@@ -63,7 +71,7 @@ const MainScreen: React.FC<MainScreenProps> = ({ authStack }) => {
           </View>
         </View>
       </View>
-  </ScreenContainer>
+  </Layout>
   );
 }
 
@@ -73,7 +81,8 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 30
+    marginBottom: 30,
+    alignSelf: 'center'
   },
   boldText: {
     fontWeight: 'bold',
@@ -92,10 +101,9 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   bottomButtonsContainer: {
-    position: 'absolute',
-    bottom: 45,
-    width: '100%',
-    alignSelf: 'center'
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginBottom: 60
   },
   loginButtonContainer: {
     marginHorizontal: 'auto'

@@ -1,16 +1,16 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-interface HistoryDetailsScreenProps {
+interface NotificationScreenProps {
 
 }
 
-const HistoryDetailsScreen: React.FC<HistoryDetailsScreenProps> = ({}) => {
+const NotificationScreen: React.FC<NotificationScreenProps> = ({}) => {
   
   return (
     <View style={styles.container}>
       <Text>
-        History Screen
+        
       </Text>
     </View>
   );
@@ -22,4 +22,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HistoryDetailsScreen;
+export default NotificationScreen;

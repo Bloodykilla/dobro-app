@@ -10,6 +10,7 @@ import FoodBasket from '../components/FoodBasket';
 import HelpedMonth from '../components/HelpedMonth';
 import Layout from '../components/Layout';
 import NeedyCard from '../components/NeedyCard';
+import Preloader from '../components/Preloader';
 import { Colors } from '../constants/Colors';
 import { FontSize } from '../constants/fontSize';
 import { Context } from '../context/ContextProvider';
@@ -70,7 +71,9 @@ const NeedyPersonScreen: React.FC<NeedyPersonScreenProps> = ({ homeStack, route 
   }
 
   return (
-    <Layout>
+    <>
+    {person && !loading ? (
+      <Layout>
       <View>
         <View style={styles.imageContainer}>
           {person?.imageLink !== '' && !loading ? (
@@ -136,7 +139,13 @@ const NeedyPersonScreen: React.FC<NeedyPersonScreenProps> = ({ homeStack, route 
       <View style={styles.buttonContainer}>
         <Button label='Допомогти' buttonAction={() => redirectButtonHandler()} />
       </View>
-    </Layout>
+      </Layout>
+      )
+    :
+      <Preloader />
+    }
+    </>
+
   );
 }
 

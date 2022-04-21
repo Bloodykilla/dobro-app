@@ -1,4 +1,4 @@
-export const PaymentItem = {
+export const PaymentItemModel = {
   paymentsList: [{
     dateTime: '',
     need: "",

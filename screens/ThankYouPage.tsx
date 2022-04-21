@@ -4,6 +4,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import BoldText from '../components/BoldText';
 import Button from '../components/Button';
+import Layout from '../components/Layout';
 import ScreenContainer from '../components/ScreenContainer';
 import { Colors } from '../constants/Colors';
 import { HomeStackParamList } from '../navigation/StackNavigaton';
@@ -20,8 +21,8 @@ const ThankYouPage: React.FC<ThankYouPageProps> = ({ homeStack }) => {
   }
 
   return (
-    <ScreenContainer>
-      <View>
+    <Layout style={{flex: 1}}>
+      <View style={{flex: 1, justifyContent: 'center', marginTop: '20%'}}>
         <BoldText>Дякуємо!</BoldText>
         <Text style={styles.regularText}>
           Завдяки вашій допомозі, ще одна 
@@ -32,7 +33,7 @@ const ThankYouPage: React.FC<ThankYouPageProps> = ({ homeStack }) => {
       </View>
       <View style={styles.imageContainer}>
         <Image
-          source={require('../assets/images/face-hearts.png')} 
+          source={require('../assets/images/party.png')} 
           style={styles.imageStyle} 
         />
       </View>
@@ -43,7 +44,7 @@ const ThankYouPage: React.FC<ThankYouPageProps> = ({ homeStack }) => {
           buttonAction={() => redirectButtonHandler()} 
         />
       </View>
-    </ScreenContainer>
+    </Layout>
   );
 }
 
@@ -61,8 +62,8 @@ const styles = StyleSheet.create({
     color: Colors.black
   },
   imageStyle: {
-    width: 125,
-    height: 125
+    width: 170,
+    height: 170
   },
   imageContainer: {
     flexDirection: 'row',
@@ -70,7 +71,9 @@ const styles = StyleSheet.create({
     marginVertical: 75
   },
   buttonContainer: {
-
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginBottom: 60
   }
 });
 

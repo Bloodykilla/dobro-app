@@ -10,6 +10,8 @@ import { NeedyPerson } from '../models/NeedyPerson';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { HomeStackParamList } from '../navigation/StackNavigaton';
 import { useNavigation } from '@react-navigation/native';
+import Layout from '../components/Layout';
+import Preloader from '../components/Preloader';
 interface PaymentScreenProps {
  route : {
    params: {
@@ -24,7 +26,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ route, mainStack }) => {
   const person = route?.params?.person;
   const activeNeedOption= route?.params?.selectedOption;
   const [mount, setMount] = useState('');
-  const { storageKey, loading } = useContext(Context);
+  const { storageKey, loading, setLoading,  setUpdate } = useContext(Context);
   const navigaiton = useNavigation<typeof mainStack>();
 
   console.log(person?.currentNeed?.id);
@@ -35,11 +37,15 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ route, mainStack }) => {
     person?.basketNeed?.id;
     try {
       if (+mount > 0) {
+        setLoading(true);
         const {data} = await payForNeeds(needId, +mount, storageKey);
         if (data === 'Success') {
+          setUpdate(true);
+          setLoading(false);
           navigaiton.navigate('Thanks');
         } else {
           Alert.alert('Сталася помилка! Спробуйте знову.');
+          setLoading(false);
         }
       } else {
         Alert.alert('Введіть коректну суму поповнення.')
@@ -50,71 +56,78 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ route, mainStack }) => {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.warningTextContainer}>
-        <Text style={styles.warningText}>
-          Памʼятайте! Кожен раз, коли ви 
-          допомагаєте нужденній людині, 
-          ви отримуєте бали, котрі потім 
-          можна буде потратити на сервіси 
-          наших партнерів.
-        </Text>
-      </View>
-      <View style={styles.paymentCardContainer}>
-        <View style={{padding: 10, flexDirection: 'row', alignItems: 'center'}}>
-          <View>
-          {person?.imageLink !== '' && !loading ? (
-            <Image
-              source={{uri: person?.imageLink}}
-              style={styles.image}
-            /> 
-          )
-          : 
-            null
-          }
-          </View>
-          <View style={{paddingLeft: 20}}>
-            <View style={styles.initialsContainer}>
-              <Text
-                style={[styles.needyName, {maxWidth: Dimensions.get('window').width - 150}]}
-                >
-                  {person?.sName} {person?.fName} {person?.pName}, {person?.age} роки
-              </Text>
+    <>
+    {!loading ? (
+      <Layout style={styles.container}>
+        <View style={styles.warningTextContainer}>
+          <Text style={styles.warningText}>
+            Памʼятайте! Кожен раз, коли ви 
+            допомагаєте нужденній людині, 
+            ви отримуєте бали, котрі потім 
+            можна буде потратити на сервіси 
+            наших партнерів.
+          </Text>
+        </View>
+        <View style={styles.paymentCardContainer}>
+          <View style={{padding: 10, flexDirection: 'row', alignItems: 'center'}}>
+            <View>
+            {person?.imageLink !== '' && !loading ? (
+              <Image
+                source={{uri: person?.imageLink}}
+                style={styles.image}
+              /> 
+            )
+            : 
+              null
+            }
             </View>
-            <View style={{paddingVertical: 4}}>
-              <Text style={{maxWidth: Dimensions.get('window').width - 150}}>
-                {activeNeedOption === 1 ? 
-                person?.currentNeed?.descShort :
-                person?.basketNeed?.descShort}
-              </Text>
+            <View style={{paddingLeft: 20}}>
+              <View style={styles.initialsContainer}>
+                <Text
+                  style={[styles.needyName, {maxWidth: Dimensions.get('window').width - 150}]}
+                  >
+                    {person?.sName} {person?.fName} {person?.pName}, {person?.age} роки
+                </Text>
+              </View>
+              <View style={{paddingVertical: 4}}>
+                <Text style={{maxWidth: Dimensions.get('window').width - 150}}>
+                  {activeNeedOption === 1 ? 
+                  person?.currentNeed?.descShort :
+                  person?.basketNeed?.descShort}
+                </Text>
+              </View>
             </View>
           </View>
         </View>
-      </View>
-      <View style={styles.restContainer}>
-        <Text style={styles.restText}>Залишилося зібрати: {activeNeedOption === 1 ? 
-          person?.currentNeed?.goal - person?.currentNeed?.currentSum :
-          person?.basketNeed?.goal - person?.basketNeed?.currentSum
-          } грн
-        </Text>
-      </View>
-      <View style={styles.inputContainer}>
-        <TextInput  
-          placeholderTextColor="#BEBEBE"
-          placeholder='Введіть суму'
-          keyboardType='numeric'
-          style={styles.input}
-          value={mount}
-          onChangeText={setMount} 
-        />
-      </View>
-      <View>
-        <Button
-          label='Сплатити' 
-          buttonAction={() => payForCurrentNeed()} 
-        />
-      </View>
-    </View>
+        <View style={styles.restContainer}>
+          <Text style={styles.restText}>Залишилося зібрати: {activeNeedOption === 1 ? 
+            person?.currentNeed?.goal - person?.currentNeed?.currentSum :
+            person?.basketNeed?.goal - person?.basketNeed?.currentSum
+            } грн
+          </Text>
+        </View>
+        <View style={styles.inputContainer}>
+          <TextInput  
+            placeholderTextColor="#BEBEBE"
+            placeholder='Введіть суму'
+            keyboardType='numeric'
+            style={styles.input}
+            value={mount}
+            onChangeText={setMount} 
+          />
+        </View>
+        <View>
+          <Button
+            label='Сплатити' 
+            buttonAction={() => payForCurrentNeed()} 
+          />
+        </View>
+      </Layout>
+      )
+    :
+      <Preloader />
+    }
+    </>
   );
 }
 

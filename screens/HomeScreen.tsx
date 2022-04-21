@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import MapView from 'react-native-maps';
 import CustomMarker from '../components/CustomMarker';
+import Preloader from '../components/Preloader';
 import { Colors } from '../constants/Colors';
 import { Context } from '../context/ContextProvider';
 import { NeedyPerson } from '../models/NeedyPerson';
@@ -14,7 +15,7 @@ interface HomeScreenProps {
 }
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ homeStack }) => {
-  const { needyPerson, loading } = useContext(Context);
+  const { needyPerson, loading, setUpdate } = useContext(Context);
   const navigation = useNavigation<typeof homeStack>();
   const [needyArray, setNeedyArray] = useState([NeedyPerson]);
 
@@ -22,10 +23,11 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ homeStack }) => {
     if (needyPerson && !loading) {
       setNeedyArray(needyPerson);
     }
-  })
+  }, [needyPerson]);
 
   const markerHandler = (item: typeof NeedyPerson) => {
     if (item) {
+      setUpdate(false);
       navigation.navigate('NeedyPerson',{
         needyPerson: item
       })
@@ -35,6 +37,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ homeStack }) => {
   }
 
   return (
+    <>
+    {needyArray && !loading ? (
     <View style={styles.container}>
       <MapView
         style={styles.map}
@@ -63,6 +67,12 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ homeStack }) => {
         }
       </MapView>
     </View>
+      )
+    :
+      <Preloader />
+    }
+    </>
+
   );
 }
 
