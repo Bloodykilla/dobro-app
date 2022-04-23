@@ -17,7 +17,7 @@ export const Context = createContext({
   customerInfo: PersonInfo,
   countHelp: 0,
   activeTimecodeOption: 0,
-  chosenCity: 'Одеса',
+  chosenCity: null,
   pagination: 12,
   isUpdate: false
 });
@@ -31,7 +31,7 @@ const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
   const [customerInfo, setCustomerInfo] = useState(PersonInfo);
   const [countHelp, setCountHelp] = useState(0);
   const [activeTimecodeOption, setActiveTimecodeOption] = useState(0);
-  const [chosenCity, setChosenCity] = useState('Одеса');
+  const [chosenCity, setChosenCity] = useState<null | string>(null);
   const [pagination, setPagination] = useState(12);
   const [isUpdate, setUpdate] = useState(false);
 

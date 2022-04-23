@@ -4,18 +4,18 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Icons } from './Icons';
 
 interface IconButtonProps {
-  iconName: string;
+  name: string;
   buttonAction: () => void;
   size: number;
   color: string;
   style?: {};
 }
 
-const IconButton: React.FC<IconButtonProps> = ({ style, iconName, buttonAction, size, color }) => {
-  
+const IconButton: React.FC<IconButtonProps> = ({ style, name, buttonAction, size, color }) => {
+
   return (
-    <TouchableOpacity style={style} onPress={() => buttonAction()}>
-      <Icons name={iconName} size={size} color={color} />
+    <TouchableOpacity style={[style]} onPress={() => buttonAction()}>
+      <Icons name={name} size={size} color={color} />
     </TouchableOpacity>
   );
 }

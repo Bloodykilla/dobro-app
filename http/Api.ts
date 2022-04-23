@@ -53,7 +53,7 @@ export const sendVerifyToken = async(token: string) => {
 
 export const fetchNeedyPersons = async(
   token: string, 
-  city: string, 
+  city: string | null, 
   quantity: number
   ) => {
   let key = await AsyncStorage.getItem('last_session');

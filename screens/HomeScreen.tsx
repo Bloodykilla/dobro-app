@@ -1,10 +1,14 @@
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import React, { useContext, useEffect, useState } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { View, StyleSheet } from 'react-native';
 import MapView from 'react-native-maps';
 import CustomMarker from '../components/CustomMarker';
+import IconButton from '../components/IconButton';
+import ModalMenu from '../components/ModalMenu';
 import Preloader from '../components/Preloader';
+import SelectBox from '../components/Selectbox';
+import { Cities } from '../constants/CityArray';
 import { Colors } from '../constants/Colors';
 import { Context } from '../context/ContextProvider';
 import { NeedyPerson } from '../models/NeedyPerson';
@@ -18,12 +22,12 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ homeStack }) => {
   const { needyPerson, loading, setUpdate } = useContext(Context);
   const navigation = useNavigation<typeof homeStack>();
   const [needyArray, setNeedyArray] = useState([NeedyPerson]);
+  const iconButtonRef = useRef();
+  const [selected, setSelected] = useState(0);
 
-  useEffect(() => {
-    if (needyPerson && !loading) {
-      setNeedyArray(needyPerson);
-    }
-  }, [needyPerson]);
+  const openMenuHandler = () => {
+    iconButtonRef?.current?.open();
+  };
 
   const markerHandler = (item: typeof NeedyPerson) => {
     if (item) {
@@ -34,7 +38,13 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ homeStack }) => {
     } else {
       return;
     }
-  }
+  };
+
+  useEffect(() => {
+    if (needyPerson && !loading) {
+      setNeedyArray(needyPerson);
+    }
+  }, [needyPerson]);
 
   return (
     <>
@@ -66,6 +76,18 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ homeStack }) => {
         : null
         }
       </MapView>
+      <View style={styles.iconContainer}>
+        <IconButton
+          style={styles.iconStyle} 
+          size={24} 
+          name='sliders' 
+          color={Colors.red} 
+          buttonAction={() => openMenuHandler()}
+        />
+        <ModalMenu modalRef={iconButtonRef}>
+          <SelectBox items={Cities} isSelected={true} />
+        </ModalMenu>
+      </View>
     </View>
       )
     :
@@ -79,34 +101,28 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ homeStack }) => {
 const styles = StyleSheet.create({
   container:{
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   map: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
-  },
-  circle: {
-    width: 35,
-    height: 35,
-    borderRadius: 50,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  stroke: {
-    width: 35,
-    height: 35,
-    borderWidth: 5,
-    borderColor: Colors.black,
-    borderRadius: 50
-  },
-  core: {
-    width: 32,
-    height: 32,
-    borderRadius: 50,
-    backgroundColor: Colors.white,
     position: 'absolute',
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    flexDirection: 'column'
+  },
+  iconStyle: {
+    width: 45,
+    height: 45,
+    borderRadius: 100,
+    backgroundColor: Colors.white,
+    justifyContent: 'center', 
+    alignItems: 'center',
+  },
+  iconContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginBottom: 40,
+    marginLeft: 'auto',
+    marginRight: 16
   }
 });
 

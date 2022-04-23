@@ -2,7 +2,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, Alert, KeyboardAvoidingView } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
 import BoldText from '../components/BoldText';
 import Button from '../components/Button';
 import ErrorText from '../components/ErrorText';
