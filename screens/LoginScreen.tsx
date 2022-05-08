@@ -1,7 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
 import React, { useContext, useState } from 'react';
-import { View, Text, StyleSheet, Alert, KeyboardAvoidingView } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import BoldText from '../components/BoldText';
 import Button from '../components/Button';
 import ErrorText from '../components/ErrorText';
@@ -13,12 +14,13 @@ import { Api } from '../constants/ApiUrl';
 import { emailValidation } from '../constants/emailRegex';
 import { FontSize } from '../constants/fontSize';
 import { Context } from '../context/ContextProvider';
+import { AuthStackParamList } from '../navigation/AuthStackNavigation';
 
 interface LoginScreenProps {
-
+  navigation: StackNavigationProp<AuthStackParamList>
 }
 
-const LoginScreen: React.FC<LoginScreenProps> = ({}) => {
+const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const { setAuth, setStorageKey, setLoading, loading } = useContext(Context);
@@ -76,14 +78,14 @@ const LoginScreen: React.FC<LoginScreenProps> = ({}) => {
   };
 
   const forgotPasswordHandler = () => {
-    Alert.alert('На жаль, ця функція не доступна');
+    navigation.navigate('Forgot')
   };
 
   return (
     <>
     {!loading ? (
       <Layout style={{flex: 1}}>
-        <KeyboardAvoidingView style={{flexGrow: 1}} behavior='padding'>
+        {/* <KeyboardAvoidingView style={{flexGrow: 1}} behavior='padding'> */}
         <View style={styles.textContainer}>
           <View>
             <BoldText>Авторизація користувача</BoldText>
@@ -123,14 +125,12 @@ const LoginScreen: React.FC<LoginScreenProps> = ({}) => {
           </View>
         </View>
         <View style={styles.bottomButtonContainer}>
-          <View>
-            <Button
-              label='Увійти' 
-              buttonAction={() => loginButtonHandler()}
-            />
-          </View>
+          <Button
+            label='Увійти' 
+            buttonAction={() => loginButtonHandler()}
+          />
         </View>
-        </KeyboardAvoidingView>
+        {/* </KeyboardAvoidingView> */}
       </Layout>
       )
     :

@@ -67,8 +67,7 @@ const RegistrationScreen: React.FC<RegistrationScreenProps> = ({ authStack }) =>
             setLoading(false);
         }
         } catch (error) {
-          console.log(error.response.data.data);
-          setError(error.response.data.data)
+          setError(error?.response?.data.data)
         }
     } else {
       setError('Введені данні некоректні.')

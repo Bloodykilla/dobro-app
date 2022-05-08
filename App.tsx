@@ -5,6 +5,7 @@ import ContextProvider from './context/ContextProvider';
 import Navigation from './navigation/Navigation';
 import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
+import { StatusBar } from 'expo-status-bar';
 
 export default function App() {
   
@@ -39,6 +40,7 @@ export default function App() {
 	return (
     <ContextProvider>
       <View style={{ flex: 1 }}>
+        <StatusBar style='dark'/>
         <Navigation />
       </View>
     </ContextProvider>

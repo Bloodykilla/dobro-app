@@ -104,6 +104,7 @@ export const fetchCustomerPayments = async(token: string, timecode: number) => {
 
 export const fetchCustomerInfo = async(token: string) => {
   let key = await AsyncStorage.getItem('last_session');
+
   const {data:response} = await axios({
     url: Api.url + Api.customer + '/getmyinfo/',
     method: 'get',
@@ -111,5 +112,31 @@ export const fetchCustomerInfo = async(token: string) => {
       Authorization: `Bearer ${token || key}`
     }
   })
+  return response;
+};
+
+export const changeCustomerInfo = async(
+  fname: string | null, 
+  sname: string | null, 
+  phone: string | null, 
+  token: string
+  ) => {
+  let key = await AsyncStorage.getItem('last_session');
+
+  const {data:response} = await axios({
+    url: Api.url + Api.customer + '/editmyinfo/',
+    method: 'post',
+    data: {
+      fName: fname,
+      sName: sname,
+      pName: null,
+      phoneNumber: phone,
+      image: null
+    },
+    headers: { 
+      Authorization: `Bearer ${token || key}` 
+    }
+  });
+  console.log(response);
   return response;
 };

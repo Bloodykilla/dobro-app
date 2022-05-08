@@ -19,7 +19,8 @@ export const Context = createContext({
   activeTimecodeOption: 0,
   chosenCity: null,
   pagination: 12,
-  isUpdate: false
+  isUpdate: false,
+  setChosenCity: (value: string) => value
 });
 
 const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
@@ -38,7 +39,7 @@ const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
   const getNeedyPersons = async() => {
     try {
       setLoading(true);
-      const {data} = await fetchNeedyPersons(storageKey, chosenCity, pagination);
+      const {data} = await fetchNeedyPersons(storageKey, chosenCity === 'Всі' ? null : chosenCity, pagination);
       if (data) {
         setNeedyPerson(data);
         setLoading(false);
@@ -46,7 +47,7 @@ const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const getCutomerPayments = async() => {
     try {
@@ -54,13 +55,13 @@ const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
       const {data} = await fetchCustomerPayments(storageKey, activeTimecodeOption);
       if (data) {
         setCustomerPayment(data?.paymentsList);
-        setCountHelp(data?.totalPaymentsNumber)
+        setCountHelp(data?.totalPaymentsNumber);
         setLoading(false);
       }
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const getCustomerInfo = async() => {
     try {
@@ -73,7 +74,7 @@ const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     if (auth) {
@@ -85,7 +86,7 @@ const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
     if (auth) {
       getNeedyPersons();
     }
-  }, [chosenCity, pagination, auth, isUpdate]);
+  }, [chosenCity, auth, isUpdate]);
 
   useEffect(() => {
     if (auth) {

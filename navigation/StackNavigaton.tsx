@@ -119,7 +119,8 @@ export const HomeStackNavigator = () => {
         component={NotificationScreen}
         options={{
           title: 'Сповіщення',
-          ...mainScreenOptions
+          ...mainScreenOptions,
+          headerRight: () => null
         }}
       />  
 
@@ -153,7 +154,8 @@ export const PaymentHistoryStackNavigator = () => {
         component={NotificationScreen}
         options={{
           title: 'Сповіщення',
-          ...mainScreenOptions
+          ...mainScreenOptions,
+          headerRight: () => null
         }}
       />  
 
@@ -168,7 +170,7 @@ export const ProfileStackNavigator = () => {
       initialRouteName: 'Profile',
       headerRight: () => {
         return (
-          <Bell buttonAction={() => {navigation.navigate('Notification')}}/>
+          <Bell buttonAction={() => {navigation.navigate('Notification')}} />
         );
       },
     })}
@@ -223,7 +225,8 @@ export const ProfileStackNavigator = () => {
         component={NotificationScreen}
         options={{
           title: 'Сповіщення',
-          ...mainScreenOptions
+          ...mainScreenOptions,
+          headerRight: () => null
         }}
       /> 
 

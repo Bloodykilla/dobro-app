@@ -4,14 +4,14 @@ import { Colors } from '../constants/Colors';
 import { FontSize } from '../constants/fontSize';
 
 interface BoldTextProps {
-
+  style?: {}
 }
 
-const BoldText: React.FC<BoldTextProps> = ({ children }) => {
+const BoldText: React.FC<BoldTextProps> = ({ children, style }) => {
   
   return (
     <View style={styles.container}>
-      <Text style={styles.boldText}>{children}</Text>
+      <Text style={[styles.boldText, style]}>{children}</Text>
     </View>
   );
 }

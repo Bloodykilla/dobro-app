@@ -29,8 +29,6 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ route, mainStack }) => {
   const { storageKey, loading, setLoading,  setUpdate } = useContext(Context);
   const navigaiton = useNavigation<typeof mainStack>();
 
-  console.log(person?.currentNeed?.id);
-
   const payForCurrentNeed = async() => {
     let needId = activeNeedOption === 1 ? 
     person?.currentNeed?.id : 

@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import Layout from '../components/Layout';
@@ -10,12 +11,13 @@ import { Colors } from '../constants/Colors';
 import { FontSize } from '../constants/fontSize';
 import { Context } from '../context/ContextProvider';
 import { PersonInfo } from '../models/Person';
+import { ProfileStackParamList } from '../navigation/StackNavigaton';
 
 interface ProfileScreenProps {
-
+  navigation: StackNavigationProp<ProfileStackParamList>
 }
 
-const ProfileScreen: React.FC<ProfileScreenProps> = ({}) => {
+const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
   const { setAuth, customerInfo, loading, countHelp } = useContext(Context);
   const [person, setPerson] = useState(PersonInfo);
 
@@ -35,6 +37,21 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({}) => {
       setPerson(customerInfo);
     }
   }, [customerInfo]);
+
+  const redirectButtonHandler = (route: string) => {
+    if (route === 'settings') {
+      navigation.navigate('Settings');
+    }
+    if (route === 'achieve') {
+      navigation.navigate('Achievement');
+    }
+    if (route === 'about') {
+      navigation.navigate('AboutProject');
+    }
+    if (route === 'donate') {
+      navigation.navigate('Donate')
+    }
+  };
 
   return (
     <>
@@ -61,16 +78,34 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({}) => {
         <View style={styles.menuInfoContainer}>
           <MenuInfoItem label='Бонуси' value={person?.bonus} />
           {/* <MenuInfoItem label='Допомоги за місяць' value={countHelp} /> */}
-          <MenuInfoItem label='Досягнень' value={4} />
+          <MenuInfoItem label='Досягнень' value={(person?.bonus / 37).toFixed()} />
         </View>
         <View style={styles.menuContainer}>
-          <MenuItem iconName='settings' label='Редагування профілю' buttonAction={() => {}} />
-          <MenuItem iconName='star' label='Досягнення' buttonAction={() => {}} />
-          <MenuItem iconName='stats' label='Загальна інформація' buttonAction={() => {}} />
-          <MenuItem iconName='heart' label=' Про проект' buttonAction={() => {}} />
-          <MenuItem iconName='hand' label='Підтримати нас' buttonAction={() => {}} />
+          <MenuItem
+            iconName='settings' 
+            label='Редагування профілю' 
+            buttonAction={() => redirectButtonHandler('settings')} 
+          />
+          <MenuItem 
+            iconName='star' 
+            label='Досягнення' 
+            buttonAction={() => redirectButtonHandler('achieve')} 
+          />
+          <MenuItem 
+            iconName='heart' 
+            label=' Про проект' 
+            buttonAction={() => redirectButtonHandler('about')} 
+          />
+          <MenuItem 
+            iconName='hand' 
+            label='Підтримати нас' 
+            buttonAction={() => redirectButtonHandler('donate')} 
+          />
         </View>
-        <LogoutButton style={{marginVertical: 20}} buttonAction={() => logoutUserHandler()} />
+        <LogoutButton
+          style={{marginVertical: 20}} 
+          buttonAction={() => logoutUserHandler()}
+        />
       </Layout>
       )
     :

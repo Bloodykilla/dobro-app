@@ -14,14 +14,12 @@ const SelectBox: React.FC<SelectBoxProps> = ({ items, isSelected }) => {
     <View style={styles.container}>
       <View>
         {items.length > 0 ? (
-          <View>
-            <ScrollView>
+            <ScrollView contentContainerStyle={{maxHeight: 200}}>
               {items.map((item, id) => (
                 <SelectItem isSelected={isSelected} key={id} value={item?.value} />
                 ))
               }
             </ScrollView>
-          </View>
           )
         :
           <View>

@@ -1,20 +1,24 @@
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
 import React from 'react';
 import { Colors } from '../constants/Colors';
 import { FontSize } from '../constants/fontSize';
 import CodeScreen from '../screens/CodeScreen';
+import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import LoginScreen from '../screens/LoginScreen';
 import MainScreen from '../screens/MainScreen';
 import RegistrationScreen from '../screens/RegistrationScreen';
+import ResetPasswordScreen from '../screens/ResetPasswordScreen';
 
 export type AuthStackParamList = {
   Main: object | undefined;
   Registration: object | undefined;
   Login: object | undefined;
   Code: object | undefined;
+  Forgot: object | undefined;
+  Reset: object | undefined;
 }
 
-const mainScreenOptions = {
+const mainScreenOptions: StackNavigationOptions = {
   headerTitleAlign: 'center', 
   headerStyle: {
     backgroundColor: Colors.white,
@@ -79,6 +83,24 @@ export const AuthStackNavigator = () => {
         component={CodeScreen}
         options={{
           title: 'Реєстрація',
+          ...mainScreenOptions,
+        }}
+      />
+
+      <AuthStackScreen.Screen
+        name="Forgot"
+        component={ForgotPasswordScreen}
+        options={{
+          title: 'Забули пароль',
+          ...mainScreenOptions,
+        }}
+      />
+
+      <AuthStackScreen.Screen
+        name="Reset"
+        component={ResetPasswordScreen}
+        options={{
+          title: 'Відновлення паролю',
           ...mainScreenOptions,
         }}
       />

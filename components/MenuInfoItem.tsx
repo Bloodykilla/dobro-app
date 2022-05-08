@@ -5,7 +5,7 @@ import { FontSize } from '../constants/fontSize';
 
 interface MenuInfoItemProps {
   label: string;
-  value: number
+  value: number | string;
 }
 
 const MenuInfoItem: React.FC<MenuInfoItemProps> = ({ label, value }) => {

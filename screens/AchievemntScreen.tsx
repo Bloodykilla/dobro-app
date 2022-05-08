@@ -1,5 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import Layout from '../components/Layout';
+import Plug from '../components/Plug';
 
 interface AchievemntScreenProps {
 
@@ -8,11 +10,9 @@ interface AchievemntScreenProps {
 const AchievemntScreen: React.FC<AchievemntScreenProps> = ({}) => {
   
   return (
-    <View style={styles.container}>
-      <Text>
-        
-      </Text>
-    </View>
+    <Layout style={{ justifyContent: 'center'}}>
+      <Plug />
+    </Layout>
   );
 }
 

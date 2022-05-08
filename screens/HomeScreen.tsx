@@ -1,13 +1,14 @@
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text, Alert } from 'react-native';
 import MapView from 'react-native-maps';
+import Button from '../components/Button';
 import CustomMarker from '../components/CustomMarker';
+import Dropdown from '../components/Dropdown';
 import IconButton from '../components/IconButton';
 import ModalMenu from '../components/ModalMenu';
 import Preloader from '../components/Preloader';
-import SelectBox from '../components/Selectbox';
 import { Cities } from '../constants/CityArray';
 import { Colors } from '../constants/Colors';
 import { Context } from '../context/ContextProvider';
@@ -19,11 +20,11 @@ interface HomeScreenProps {
 }
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ homeStack }) => {
-  const { needyPerson, loading, setUpdate } = useContext(Context);
+  const { needyPerson, loading, setUpdate, setChosenCity } = useContext(Context);
   const navigation = useNavigation<typeof homeStack>();
   const [needyArray, setNeedyArray] = useState([NeedyPerson]);
   const iconButtonRef = useRef();
-  const [selected, setSelected] = useState(0);
+  const [selectedCity, setSelectedCity] = useState('Всі');
 
   const openMenuHandler = () => {
     iconButtonRef?.current?.open();
@@ -40,11 +41,19 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ homeStack }) => {
     }
   };
 
+  const filterButtonHandler = () => {
+    if (selectedCity) {
+      setChosenCity(selectedCity);
+    } else {
+      Alert.alert('Сталася помилка. Спробуйте ще раз')
+    }
+  };  
+
   useEffect(() => {
     if (needyPerson && !loading) {
       setNeedyArray(needyPerson);
     }
-  }, [needyPerson]);
+  });
 
   return (
     <>
@@ -52,12 +61,6 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ homeStack }) => {
     <View style={styles.container}>
       <MapView
         style={styles.map}
-        initialRegion={{
-          latitude: 46.48164033135742, 
-          longitude:  30.726885423942463,
-          latitudeDelta: 0,
-          longitudeDelta: 0
-        }}
       >
         {needyArray.length > 0 ? (
           <>
@@ -85,7 +88,15 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ homeStack }) => {
           buttonAction={() => openMenuHandler()}
         />
         <ModalMenu modalRef={iconButtonRef}>
-          <SelectBox items={Cities} isSelected={true} />
+          <View style={styles.filterContainer}>
+            <Text style={{textAlign: 'center', color: Colors.textGrey, paddingBottom: 6}}>Оберіть місто</Text>
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+              <Dropdown data={Cities} onSelect={setSelectedCity} label={selectedCity} />
+            </View>
+            <View style={styles.filterButton}>
+              <Button label='Фільтр' buttonAction={() => filterButtonHandler()} /> 
+            </View>
+          </View>
         </ModalMenu>
       </View>
     </View>
@@ -123,6 +134,17 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     marginLeft: 'auto',
     marginRight: 16
+  },
+  filterContainer: {
+    marginTop: 40,
+    paddingHorizontal: 32,
+    flexDirection: 'column',
+    flex: 1
+  },
+  filterButton: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginBottom: 60
   }
 });
 
