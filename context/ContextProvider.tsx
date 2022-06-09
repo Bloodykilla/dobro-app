@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
+import { Value } from 'react-native-reanimated';
 import { fetchCustomerInfo, fetchCustomerPayments, fetchNeedyPersons } from '../http/Api';
 import { NeedyPerson } from '../models/NeedyPerson';
 import { PaymentItemModel } from '../models/PaymentItem';
@@ -20,6 +21,8 @@ export const Context = createContext({
   chosenCity: null,
   pagination: 12,
   isUpdate: false,
+  customerUpdate: false,
+  setCustomerUpdate: (value: boolean) => value,
   setChosenCity: (value: string) => value
 });
 
@@ -35,6 +38,7 @@ const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
   const [chosenCity, setChosenCity] = useState<null | string>(null);
   const [pagination, setPagination] = useState(12);
   const [isUpdate, setUpdate] = useState(false);
+  const [customerUpdate, setCustomerUpdate] = useState(false);
 
   const getNeedyPersons = async() => {
     try {
@@ -76,6 +80,8 @@ const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
     }
   };
 
+  console.log('Customer info: ', customerInfo, customerUpdate);
+
   useEffect(() => {
     if (auth) {
       getCutomerPayments();
@@ -92,7 +98,7 @@ const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
     if (auth) {
       getCustomerInfo();
     }
-  }, [auth]);
+  }, [auth, customerUpdate]);
 
   return (
     <Context.Provider value={{
@@ -111,7 +117,9 @@ const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
       setActiveTimecodeOption,
       setChosenCity,
       setPagination,
-      setUpdate
+      setUpdate,
+      customerUpdate,
+      setCustomerUpdate
     }}>
       {children}
     </Context.Provider>

@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Route, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, Alert } from 'react-native';
 import Button from '../components/Button';
 import CustomTab from '../components/CustomTab';
 import DetailsButton from '../components/DetailsButton';
@@ -37,8 +37,7 @@ const NeedyPersonScreen: React.FC<NeedyPersonScreenProps> = ({ homeStack, route 
     if (route?.params?.needyPerson) {
       setPerson(route?.params?.needyPerson);
     }
-  }, [route?.params?.needyPerson])
-
+  }, [route?.params?.needyPerson]);
 
   const onSelectSwitch = (index: number) => {
     setSelectedOption(index);
@@ -49,13 +48,16 @@ const NeedyPersonScreen: React.FC<NeedyPersonScreenProps> = ({ homeStack, route 
   };
 
   const redirectButtonHandler = async() => {
-    if (selectedOption) {
+    if (
+        (selectedOption === 1 && person.currentNeed !== null) || 
+        (selectedOption === 2 && person.basketNeed !== null)
+      ) {
       navigaiton.navigate('Payment', {
         person: person,
         selectedOption: selectedOption
       })
-    }
-    else {
+    } else {
+      Alert.alert('Поточний збір відсутній');
       return;
     }
   }
@@ -113,12 +115,16 @@ const NeedyPersonScreen: React.FC<NeedyPersonScreenProps> = ({ homeStack, route 
           <NeedyCard
             title={person?.currentNeed?.descShort}
             currentProgress={+getCurrentSum(person)}
-            rest={person?.currentNeed?.goal - person?.currentNeed?.currentSum}
+            rest={(person?.currentNeed?.goal - person?.currentNeed?.currentSum).toFixed()}
           />
           )
         :
           <View>
-            <Text style={styles.foodBasketText}>Також Ви можете допомогти, придбавши набір продуктів для місячного раціону нужденного.</Text>
+            <Text style={styles.foodBasketText}>
+              Також Ви можете допомогти, придбавши
+              набір продуктів для місячного раціону 
+              нужденного.
+            </Text>
             <FoodBasket
               foodRest={person?.basketNeed?.goal - person?.basketNeed?.currentSum}
               foodDesc={person?.basketNeed?.descShort}
@@ -137,7 +143,7 @@ const NeedyPersonScreen: React.FC<NeedyPersonScreenProps> = ({ homeStack, route 
         }
       </View>
       <View style={styles.buttonContainer}>
-        <Button label='Допомогти' buttonAction={() => redirectButtonHandler()} />
+        <Button outline={true} label='Допомогти' buttonAction={() => redirectButtonHandler()} />
       </View>
       </Layout>
       )

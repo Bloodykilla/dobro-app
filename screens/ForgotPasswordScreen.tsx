@@ -58,7 +58,7 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({ navigation 
             <View style={styles.regularTextContainer}>
               <Text
                 style={styles.regularText}>
-                  Введіть свій логін від аккаунт для відновлення паролю та отримання подальших вказівок
+                  Введіть свій логін для відновлення паролю та отримання подальших вказівок
               </Text>
             </View>
         </View>

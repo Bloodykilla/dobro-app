@@ -2,7 +2,6 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
 import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import BoldText from '../components/BoldText';
 import Button from '../components/Button';
 import ErrorText from '../components/ErrorText';
 import Input from '../components/Input';
@@ -11,87 +10,80 @@ import Preloader from '../components/Preloader';
 import { Api } from '../constants/ApiUrl';
 import { FontSize } from '../constants/fontSize';
 import { Context } from '../context/ContextProvider';
-import { AuthStackParamList } from '../navigation/AuthStackNavigation';
+import { ProfileStackParamList } from '../navigation/StackNavigaton';
 
-
-interface ResetPasswordScreenProps {
-  navigation: StackNavigationProp<AuthStackParamList>
+interface VerifyEmailScreenProps {
+  navigation: StackNavigationProp<ProfileStackParamList>
 }
 
-const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({ navigation }) => {
-  const { setLoading, loading } = useContext(Context);
-  const [password, setPassword] = useState('');
-  const [confirm, setConfirm] = useState('');
-  const [code, setCode] = useState('');
+const VerifyEmailScreen: React.FC<VerifyEmailScreenProps> = ({ navigation }) => {
+  const { loading, setLoading, setCustomerUpdate } = useContext(Context);
+  const [email, setEmail] = useState('');
+  const [confirmEmail, setConfirmEmail] = useState('');
   const [error, setError] = useState('');
+  const [token, setToken] = useState('');
 
-  const resetPasswordHandler = async() => {
-    if (password.length < 6) {
-      setError('Пароль має містити більше 6 знаків')
-    }
+  const changeEmailHandler = async() => {
 
-    if (password !== confirm) {
-      setError('Паролі не збігаються.');
-    } 
     try {
       setLoading(true);
       const response = await axios({
-        url: Api.url + Api.auth + '/reset-password/',
+        url: Api.url + Api.auth + '/change-token/',
         method: 'post',
         data: {
-          token: code,
-          password: password,
-          confirmPassword: confirm
+          token: token,
+          email: email,
+          confirmEmail: confirmEmail
         }
       })
       if (response.data.data && response.data.result === "Success") {
+        console.log(response.data.data)
         setLoading(false);
-        navigation.navigate('Login');
+        setCustomerUpdate(true);
+        navigation.popToTop();
       } else {
         setError(response?.data.data);
         setLoading(false);
+        setCustomerUpdate(false);
       }
     } catch (error) {
-      setLoading(false);
-      console.log(error.response.data);
-    }
+        setLoading(false);
+        setError(error?.response?.data.data)
+      }
   };
-
+  
   return (
     <>
     {!loading ? (
       <Layout style={styles.container}>
         <View style={styles.textContainer}>
-            <View>
-              <BoldText>Відновлення паролю</BoldText>
-            </View>
-            <View style={styles.regularTextContainer}>
-              <Text
-                style={styles.regularText}>
-                  Введіть новий пароль та отриманний веріфікаційний код за для зміни паролю.
-              </Text>
-            </View>
+          <View style={styles.regularTextContainer}>
+            <Text
+              style={styles.regularText}>
+                Введіть нову ел. пошту для завершення операції.
+            </Text>
+          </View>
         </View>
         <View>
           <Input
-            placeholder='Код' 
-              value={code} 
-            setValue={setCode}
+            placeholder='Отриманий код' 
+            value={token} 
+            setValue={setToken}
           />
           <Input
-            placeholder='Пароль' 
-            value={password} 
-            setValue={setPassword}
+            placeholder='Нова ел. пошта' 
+            value={email} 
+            setValue={setEmail}
           />
           <Input
-            placeholder='Підтвердження паролю' 
-            value={confirm} 
-            setValue={setConfirm}
+            placeholder='Підтвердження ел. пошти' 
+            value={confirmEmail} 
+            setValue={setConfirmEmail}
           />
         </View>
         <View style={styles.textButtonContainer}>
             {error ? (
-            <ErrorText text={error} style={{width: '100%'}} />
+            <ErrorText text={error} style={{ width: '100%' }} />
               )
             :
               null
@@ -99,8 +91,8 @@ const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({ navigation })
         </View>
         <View style={styles.bottomButtonContainer}>
             <Button
-              label='Відновити пароль' 
-              buttonAction={() => resetPasswordHandler()}
+              label='Змінити ел. пошту' 
+              buttonAction={() => changeEmailHandler()}
             />
         </View>
       </Layout>
@@ -147,4 +139,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ResetPasswordScreen;
+export default VerifyEmailScreen;

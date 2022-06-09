@@ -2,13 +2,14 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 interface ErrorTextProps {
-  text: string
+  text: string;
+  style?: {}
 }
 
-const ErrorText: React.FC<ErrorTextProps> = ({ text }) => {
+const ErrorText: React.FC<ErrorTextProps> = ({ text, style }) => {
   
   return (
-    <View style={{width: '50%'}}>
+    <View style={[{width: '50%'}, style]}>
       <Text style={styles.text}>
         {text}
       </Text>

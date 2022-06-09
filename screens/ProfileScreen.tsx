@@ -18,7 +18,7 @@ interface ProfileScreenProps {
 }
 
 const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
-  const { setAuth, customerInfo, loading, countHelp } = useContext(Context);
+  const { setAuth, customerInfo, loading, setCustomerUpdate } = useContext(Context);
   const [person, setPerson] = useState(PersonInfo);
 
 

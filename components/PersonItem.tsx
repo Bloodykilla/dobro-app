@@ -12,6 +12,7 @@ interface PersonItemProps {
   textValue?: string;
   editable?: boolean;
   keyType?: KeyboardTypeOptions;
+  action?: () => void
 }
 
 const PersonItem: React.FC<PersonItemProps> = ({
@@ -20,13 +21,18 @@ const PersonItem: React.FC<PersonItemProps> = ({
   setValue, 
   submitEdit,
   editable,
-  keyType
+  keyType,
+  action
   }) => {
   const inputRef = useRef(null);
   const [isEdit, setEdit] = useState(editable);
 
   const editFieldsHandler = () => {
-    setEdit(!isEdit);
+    if (action) {
+      action();
+    } else {
+      setEdit(!isEdit);
+    }
   }
 
   const onSubmitHandler = () => {
