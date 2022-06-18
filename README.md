@@ -1,10 +1,14 @@
-# dobro-app
-soical charity application
 
-# Install Expo cli (https://docs.expo.dev/get-started/installation/)
 
-# Run the app
+# Install Expo cli 
+Expo CLI - (https://docs.expo.dev/get-started/installation/)
 
+# Developing
+run this command to start the app
 `expo start`
 
-# This application was create for helping eldery people
+# Building
+run this command to start a build
+`expo build:ios` or `expo build:android`
+
+
