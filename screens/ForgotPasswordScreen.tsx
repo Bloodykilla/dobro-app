@@ -11,7 +11,6 @@ import Preloader from '../components/Preloader';
 import TextButton from '../components/TextButton';
 import { Api } from '../constants/ApiUrl';
 import { FontSize } from '../constants/fontSize';
-import { Context } from '../context/ContextProvider';
 import { AuthStackParamList } from '../navigation/AuthStackNavigation';
 
 interface ForgotPasswordScreenProps {
@@ -19,37 +18,14 @@ interface ForgotPasswordScreenProps {
 }
 
 const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({ navigation }) => {
-  const { setLoading, loading } = useContext(Context);
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
 
   const forgotPasswordHandler = async() => {
-    try {
-      setLoading(true);
-
-      const response = await axios({
-        url: Api.url + Api.auth + '/forgot-password/',
-        method: 'post',
-        data: {
-          email: email
-        }
-      })
-      if (response.data.data && response.data.result === "Success") {
-        setLoading(false);
-        navigation.navigate('Reset');
-      } else {
-        setError(response?.data.data);
-        setLoading(false);
-      }
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-    }
   };
   
   return (
     <>
-    {!loading ? (
       <Layout style={styles.container}>
         <View style={styles.textContainer}>
             <View>
@@ -84,12 +60,6 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({ navigation 
             />
         </View>
       </Layout>
-    )
-    :
-      <Layout style={{flex: 1}}>
-        <Preloader />
-      </Layout>
-    }
     </>
   );
 }
