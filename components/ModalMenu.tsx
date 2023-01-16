@@ -1,14 +1,13 @@
-import React from 'react';
-import { Dimensions, StyleSheet } from 'react-native';
-import RBSheet from 'react-native-raw-bottom-sheet';
-import { Colors } from '../constants/Colors';
+import React, { LegacyRef } from "react";
+import { Dimensions, StyleSheet } from "react-native";
+import RBSheet from "react-native-raw-bottom-sheet";
 
 interface ModalMenuProps {
-  modalRef: {}
+  modalRef: LegacyRef<RBSheet> | null;
 }
 
-const ModalMenu: React.FC<ModalMenuProps> = ({ children, modalRef}) => {
-  const windowPorp = Dimensions.get('window');
+const ModalMenu: React.FC<ModalMenuProps> = ({ children, modalRef }) => {
+  const windowPorp = Dimensions.get("window");
 
   return (
     <RBSheet
@@ -19,22 +18,20 @@ const ModalMenu: React.FC<ModalMenuProps> = ({ children, modalRef}) => {
       closeOnPressMask={true}
       customStyles={{
         wrapper: {
-          backgroundColor: 'rgba(0,0,0,0.5)'
+          backgroundColor: "rgba(0,0,0,0.5)",
         },
         draggableIcon: {
-          backgroundColor: "#000"
-        }
+          backgroundColor: "#000",
+        },
       }}
     >
       {children}
     </RBSheet>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  container: {
-
-  },
+  container: {},
 });
 
 export default ModalMenu;
