@@ -1,51 +1,24 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Context } from '../context/ContextProvider';
-import AuthNavigator from './AuthNavigator';
-import TabNavigator from './TabNavigator';
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import AuthNavigator from "./AuthNavigator";
+import TabNavigator from "./TabNavigator";
 
-interface NavigationProps {
-
-}
+interface NavigationProps {}
 
 const Navigation: React.FC<NavigationProps> = ({}) => {
-  const { auth, setStorageKey, setAuth } = useContext(Context);
-  const [value, setValue] = useState('');
-
-  const getSessionKeyFromStorage = async() => {
-    const lastKey = await AsyncStorage.getItem('last_session');
-    try {
-      if (lastKey !== null ) {
-        setValue(lastKey); 
-        setStorageKey(lastKey);
-        setAuth(true);
-      } 
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  useEffect(() => {
-    getSessionKeyFromStorage();
-  }, [])
+  //init auth state for development and navigation between tab navigators
+  // change auth to true for navigating to HomeScreen
+  const auth = true;
 
   return (
     <View style={{ flex: 1 }}>
-      {value === null || !auth
-      ? 
-        <AuthNavigator />
-      :
-        <TabNavigator />
-      }
+      {!auth ? <AuthNavigator /> : <TabNavigator />}
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
-  container: {
-
-  },
+  container: {},
 });
 
 export default Navigation;

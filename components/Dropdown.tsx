@@ -16,8 +16,8 @@ const Dropdown: React.FC<DropdownProps> = ({ label, data, onSelect }) => {
   const [selected, setSelected] = useState(undefined); 
 
   const toggleDropdown = (): void => {
-    openDropdown();
     setVisible(!visible);
+    openDropdown();
   };
 
   const onItemPress = (item): void => {

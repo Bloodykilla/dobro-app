@@ -1,4 +1,4 @@
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
 import React from 'react';
 import { Colors } from '../constants/Colors';
 import { FontSize } from '../constants/fontSize';
@@ -14,6 +14,8 @@ import DonateScreen from '../screens/DonateScreen';
 import ThankYouPage from '../screens/ThankYouPage';
 import Bell from '../components/Bell';
 import NotificationScreen from '../screens/NotificationScreen';
+import ChangeEmailScreen from '../screens/ChangeEmailScreen';
+import VerifyEmailScreen from '../screens/VerifyEmailScreen';
 
 export type HomeStackParamList = {
   Home: object | undefined;
@@ -35,9 +37,11 @@ export type ProfileStackParamList = {
   AboutProject: object | undefined;
   Donate: object | undefined;
   Notification: object | undefined;
+  ChangeEmail: object | undefined;
+  VerifyEmail: object | undefined;
 };
 
-const mainScreenOptions = {
+const mainScreenOptions: StackNavigationOptions = {
   headerTitleAlign: 'center', 
   headerStyle: {
     backgroundColor: Colors.white,
@@ -227,6 +231,24 @@ export const ProfileStackNavigator = () => {
           title: 'Сповіщення',
           ...mainScreenOptions,
           headerRight: () => null
+        }}
+      /> 
+
+      <ProfileStackScreen.Screen
+        name="ChangeEmail"
+        component={ChangeEmailScreen}
+        options={{
+          title: 'Зміна ел. пошти',
+          ...mainScreenOptions,
+        }}
+      /> 
+
+      <ProfileStackScreen.Screen
+        name="VerifyEmail"
+        component={VerifyEmailScreen}
+        options={{
+          title: 'Зміна ел. пошти',
+          ...mainScreenOptions,
         }}
       /> 
 

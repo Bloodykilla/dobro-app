@@ -1,49 +1,55 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import BoldText from "../components/BoldText";
 import Button from "../components/Button";
 import ErrorText from "../components/ErrorText";
 import Input from "../components/Input";
 import Layout from "../components/Layout";
 import { FontSize } from "../constants/fontSize";
-import { AuthStackParamList } from "../navigation/AuthStackNavigation";
 
-interface ResetPasswordScreenProps {
-  navigation: StackNavigationProp<AuthStackParamList>;
+import { ProfileStackParamList } from "../navigation/StackNavigaton";
+
+interface VerifyEmailScreenProps {
+  navigation: StackNavigationProp<ProfileStackParamList>;
 }
 
-const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({
+const VerifyEmailScreen: React.FC<VerifyEmailScreenProps> = ({
   navigation,
 }) => {
-  const [password, setPassword] = useState("");
-  const [confirm, setConfirm] = useState("");
-  const [code, setCode] = useState("");
+  const [email, setEmail] = useState("");
+  const [confirmEmail, setConfirmEmail] = useState("");
   const [error, setError] = useState("");
+  const [token, setToken] = useState("");
 
-  const resetPasswordHandler = async () => {};
+  const changeEmailHandler = async () => {
+    navigation.popToTop();
+  };
 
   return (
     <>
       <Layout style={styles.container}>
         <View style={styles.textContainer}>
-          <View>
-            <BoldText>Відновлення паролю</BoldText>
-          </View>
           <View style={styles.regularTextContainer}>
             <Text style={styles.regularText}>
-              Введіть новий пароль та отриманний веріфікаційний код за для зміни
-              паролю.
+              Введіть нову ел. пошту для завершення операції.
             </Text>
           </View>
         </View>
         <View>
-          <Input placeholder="Код" value={code} setValue={setCode} />
-          <Input placeholder="Пароль" value={password} setValue={setPassword} />
           <Input
-            placeholder="Підтвердження паролю"
-            value={confirm}
-            setValue={setConfirm}
+            placeholder="Отриманий код"
+            value={token}
+            setValue={setToken}
+          />
+          <Input
+            placeholder="Нова ел. пошта"
+            value={email}
+            setValue={setEmail}
+          />
+          <Input
+            placeholder="Підтвердження ел. пошти"
+            value={confirmEmail}
+            setValue={setConfirmEmail}
           />
         </View>
         <View style={styles.textButtonContainer}>
@@ -51,8 +57,8 @@ const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({
         </View>
         <View style={styles.bottomButtonContainer}>
           <Button
-            label="Відновити пароль"
-            buttonAction={() => resetPasswordHandler()}
+            label="Змінити ел. пошту"
+            buttonAction={() => changeEmailHandler()}
           />
         </View>
       </Layout>
@@ -93,4 +99,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ResetPasswordScreen;
+export default VerifyEmailScreen;
