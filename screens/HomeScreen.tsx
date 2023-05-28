@@ -40,8 +40,6 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ homeStack }) => {
     iconButtonRef?.current?.close();
   };
 
-  console.log(data?.needyPersons?.data[1]?.attributes);
-
   return (
     <View style={styles.container}>
       {loading && <Preloader />}
