@@ -1,0 +1,34 @@
+query NeedyPerson($id: ID) {
+  needyPerson(id: $id) {
+    data {
+      id
+      attributes {
+        years
+        thumbnail {
+          data {
+            attributes {
+              url
+            }
+          }
+        }
+        firstName
+        lastName
+        patronymic
+        description
+        persons_needs {
+          data {
+            id
+            attributes {
+              title
+              description
+              requestedSum
+              currentSum
+              isActive
+              createdAt
+            }
+          }
+        }
+      }
+    }
+  }
+}

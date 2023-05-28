@@ -11,14 +11,16 @@ const Navigation: React.FC<NavigationProps> = ({}) => {
   const auth = true;
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       {!auth ? <AuthNavigator /> : <TabNavigator />}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    flex: 1,
+  },
 });
 
 export default Navigation;

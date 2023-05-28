@@ -1,0 +1,29 @@
+query NeedyPersons {
+  needyPersons {
+    data {
+      id
+      attributes {
+        thumbnail {
+          data {
+            attributes {
+              url
+              name
+            }
+          }
+        }
+        needy_category {
+          data {
+            id
+            attributes {
+              name
+            }
+          }
+        }
+        geolocation {
+          latitude
+          langitude
+        }
+      }
+    }
+  }
+}

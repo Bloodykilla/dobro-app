@@ -1,25 +1,14 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React from "react";
+import { StyleSheet, View } from "react-native";
 
-interface BackButtonProps {
-
-}
+interface BackButtonProps {}
 
 const BackButton: React.FC<BackButtonProps> = ({}) => {
-  
-  return (
-    <View style={styles.container} >
-      <Text>
-        
-      </Text>
-    </View>
-  );
-}
+  return <View style={styles.container}></View>;
+};
 
 const styles = StyleSheet.create({
-  container: {
-
-  },
+  container: {},
 });
 
 export default BackButton;

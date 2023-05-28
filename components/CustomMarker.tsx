@@ -20,7 +20,7 @@ const CustomMarker: React.FC<CustomMarkerProps> = ({
 }) => {
   return (
     <TouchableOpacity>
-      {latitude != null && longitude != null ? (
+      {latitude && longitude ? (
         <Marker
           coordinate={{
             latitude: latitude,
@@ -33,11 +33,7 @@ const CustomMarker: React.FC<CustomMarkerProps> = ({
             {imgPath ? (
               <View style={styles.imageContainer}>
                 <Image
-                  source={
-                    imgPath
-                      ? { uri: imgPath }
-                      : { uri: '' }
-                  }
+                  source={imgPath ? { uri: imgPath } : { uri: "" }}
                   style={{
                     width: 30,
                     height: 30,

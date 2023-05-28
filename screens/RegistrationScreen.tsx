@@ -8,7 +8,6 @@ import Button from "../components/Button";
 import ErrorText from "../components/ErrorText";
 import Input from "../components/Input";
 import Layout from "../components/Layout";
-import PhoneInput from "../components/PhoneInput";
 import { FontSize } from "../constants/fontSize";
 import { AuthStackParamList } from "../navigation/AuthStackNavigation";
 
@@ -24,7 +23,6 @@ const RegistrationScreen: React.FC<RegistrationScreenProps> = ({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [phone, setPhone] = useState("");
   const navigation = useNavigation<typeof authStack>();
   const [error, setError] = useState("");
 
@@ -62,14 +60,7 @@ const RegistrationScreen: React.FC<RegistrationScreenProps> = ({
                 setValue={setSurname}
               />
             </View>
-            <View style={styles.inputContainer}>
-              <PhoneInput
-                geoNumber="380"
-                placeholder="__ ___ ____"
-                value={phone}
-                inputMaskChange={setPhone}
-              />
-            </View>
+
             <View style={styles.inputContainer}>
               <Input
                 placeholder={"Ел. пошта"}

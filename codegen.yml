@@ -1,0 +1,18 @@
+overwrite: true
+schema: 'http://localhost:1337/graphql'
+documents: './api/graphql/**/*.{gql,graphql}'
+generates:
+  ./api/generated/schema.tsx:
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
+    config:
+      enumsAsTypes: true
+      avoidOptionals: true
+      skipTypename: true
+      # preResolveTypes: false
+      # nonOptionalTypename: true
+  ./graphql.schema.json:
+    plugins:
+      - 'introspection'

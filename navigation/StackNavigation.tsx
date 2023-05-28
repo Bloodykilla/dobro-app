@@ -1,21 +1,24 @@
-import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
-import React from 'react';
-import { Colors } from '../constants/Colors';
-import { FontSize } from '../constants/fontSize';
-import HomeScreen from '../screens/HomeScreen';
-import NeedyPersonScreen from '../screens/NeedyPersonScreen';
-import PaymentScreen from '../screens/PaymentScreen';
-import PaymentHistoryScreen from '../screens/PaymentHistoryScreen';
-import ProfileScreen from '../screens/ProfileScreen';
-import SettingsScreen from '../screens/SettingsScreen';
-import AchievemntScreen from '../screens/AchievemntScreen';
-import AboutScreen from '../screens/AboutScreen';
-import DonateScreen from '../screens/DonateScreen';
-import ThankYouPage from '../screens/ThankYouPage';
-import Bell from '../components/Bell';
-import NotificationScreen from '../screens/NotificationScreen';
-import ChangeEmailScreen from '../screens/ChangeEmailScreen';
-import VerifyEmailScreen from '../screens/VerifyEmailScreen';
+import {
+  createStackNavigator,
+  StackNavigationOptions,
+} from "@react-navigation/stack";
+import React from "react";
+import Bell from "../components/Bell";
+import { Colors } from "../constants/Colors";
+import { FontSize } from "../constants/fontSize";
+import AboutScreen from "../screens/AboutScreen";
+import AchievemntScreen from "../screens/AchievemntScreen";
+import ChangeEmailScreen from "../screens/ChangeEmailScreen";
+import DonateScreen from "../screens/DonateScreen";
+import HomeScreen from "../screens/HomeScreen";
+import NeedyPersonScreen from "../screens/NeedyPersonScreen";
+import NotificationScreen from "../screens/NotificationScreen";
+import PaymentHistoryScreen from "../screens/PaymentHistoryScreen";
+import PaymentScreen from "../screens/PaymentScreen";
+import ProfileScreen from "../screens/ProfileScreen";
+import SettingsScreen from "../screens/SettingsScreen";
+import ThankYouPage from "../screens/ThankYouPage";
+import VerifyEmailScreen from "../screens/VerifyEmailScreen";
 
 export type HomeStackParamList = {
   Home: object | undefined;
@@ -42,50 +45,54 @@ export type ProfileStackParamList = {
 };
 
 const mainScreenOptions: StackNavigationOptions = {
-  headerTitleAlign: 'center', 
+  headerTitleAlign: "center",
   headerStyle: {
     backgroundColor: Colors.white,
-    elevation: 0, 
+    elevation: 0,
     shadowOpacity: 0,
     borderBottomWidth: 0,
-    shadowOffset: { 
-      height: 0, 
-      width: 0 
+    shadowOffset: {
+      height: 0,
+      width: 0,
     },
   },
-  headerBackTitle: 'Назад',
+  headerBackTitle: "Back",
   headerBackTitleStyle: {
-    color: Colors.black
+    color: Colors.black,
   },
   headerTintColor: Colors.black,
   headerTitleStyle: {
     fontSize: FontSize.large,
-    fontWeight: 'bold',
-    color: Colors.black
-  }
-}
+    fontWeight: "bold",
+    color: Colors.black,
+  },
+};
 
 const HomeStackScreen = createStackNavigator<HomeStackParamList>();
 const PaymentStackScreen = createStackNavigator<PaymentsStackParamList>();
 const ProfileStackScreen = createStackNavigator<ProfileStackParamList>();
 
 export const HomeStackNavigator = () => {
-  
   return (
-    <HomeStackScreen.Navigator screenOptions={({navigation}) => ({
-      initialRouteName: 'Home',
-      headerRight: () => {
-        return (
-          <Bell buttonAction={() => {navigation.navigate('Notification')}}/>
-        );
-      },
-    })}
+    <HomeStackScreen.Navigator
+      screenOptions={({ navigation }) => ({
+        initialRouteName: "Home",
+        headerRight: () => {
+          return (
+            <Bell
+              buttonAction={() => {
+                navigation.navigate("Notification");
+              }}
+            />
+          );
+        },
+      })}
     >
       <HomeStackScreen.Screen
         name="Home"
         component={HomeScreen}
         options={{
-          title: 'Головна',
+          title: "Main",
           ...mainScreenOptions,
         }}
       />
@@ -94,7 +101,7 @@ export const HomeStackNavigator = () => {
         name="NeedyPerson"
         component={NeedyPersonScreen}
         options={{
-          title: 'Головна',
+          title: "Main",
           ...mainScreenOptions,
         }}
       />
@@ -103,18 +110,18 @@ export const HomeStackNavigator = () => {
         name="Payment"
         component={PaymentScreen}
         options={{
-          title: 'Допомога',
+          title: "Help",
           ...mainScreenOptions,
         }}
-      />  
+      />
 
       <HomeStackScreen.Screen
         name="Thanks"
         component={ThankYouPage}
         options={{
-          title: 'Допомога',
+          title: "Help",
           headerLeft: () => null,
-          ...mainScreenOptions
+          ...mainScreenOptions,
         }}
       />
 
@@ -122,33 +129,36 @@ export const HomeStackNavigator = () => {
         name="Notification"
         component={NotificationScreen}
         options={{
-          title: 'Сповіщення',
+          title: "Notification",
           ...mainScreenOptions,
-          headerRight: () => null
+          headerRight: () => null,
         }}
-      />  
-
+      />
     </HomeStackScreen.Navigator>
-  )
-}
+  );
+};
 
 export const PaymentHistoryStackNavigator = () => {
-
   return (
-    <PaymentStackScreen.Navigator screenOptions={({navigation}) => ({
-      initialRouteName: 'PaymentHistory',
-      headerRight: () => {
-        return (
-          <Bell buttonAction={() => {navigation.navigate('Notification')}}/>
-        );
-      },
-    })}
+    <PaymentStackScreen.Navigator
+      screenOptions={({ navigation }) => ({
+        initialRouteName: "PaymentHistory",
+        headerRight: () => {
+          return (
+            <Bell
+              buttonAction={() => {
+                navigation.navigate("Notification");
+              }}
+            />
+          );
+        },
+      })}
     >
       <PaymentStackScreen.Screen
         name="PaymentHistory"
         component={PaymentHistoryScreen}
         options={{
-          title: 'Мої платежі',
+          title: "My Payments",
           ...mainScreenOptions,
         }}
       />
@@ -157,42 +167,45 @@ export const PaymentHistoryStackNavigator = () => {
         name="Notification"
         component={NotificationScreen}
         options={{
-          title: 'Сповіщення',
+          title: "Notification",
           ...mainScreenOptions,
-          headerRight: () => null
+          headerRight: () => null,
         }}
-      />  
-
+      />
     </PaymentStackScreen.Navigator>
-  )
-}
+  );
+};
 
 export const ProfileStackNavigator = () => {
-  
   return (
-    <ProfileStackScreen.Navigator screenOptions={({navigation}) => ({
-      initialRouteName: 'Profile',
-      headerRight: () => {
-        return (
-          <Bell buttonAction={() => {navigation.navigate('Notification')}} />
-        );
-      },
-    })}
+    <ProfileStackScreen.Navigator
+      screenOptions={({ navigation }) => ({
+        initialRouteName: "Profile",
+        headerRight: () => {
+          return (
+            <Bell
+              buttonAction={() => {
+                navigation.navigate("Notification");
+              }}
+            />
+          );
+        },
+      })}
     >
-    <ProfileStackScreen.Screen
+      <ProfileStackScreen.Screen
         name="Profile"
         component={ProfileScreen}
         options={{
-          title: 'Мій профіль',
+          title: "My Profile",
           ...mainScreenOptions,
         }}
-    />
+      />
 
       <ProfileStackScreen.Screen
         name="Settings"
         component={SettingsScreen}
         options={{
-          title: 'Налаштування',
+          title: "Settings",
           ...mainScreenOptions,
         }}
       />
@@ -201,7 +214,7 @@ export const ProfileStackNavigator = () => {
         name="Achievement"
         component={AchievemntScreen}
         options={{
-          title: 'Досягнення',
+          title: "Achievements",
           ...mainScreenOptions,
         }}
       />
@@ -210,7 +223,7 @@ export const ProfileStackNavigator = () => {
         name="AboutProject"
         component={AboutScreen}
         options={{
-          title: 'Про проект',
+          title: "About",
           ...mainScreenOptions,
         }}
       />
@@ -219,39 +232,38 @@ export const ProfileStackNavigator = () => {
         name="Donate"
         component={DonateScreen}
         options={{
-          title: 'Підтримати нас',
+          title: "Support Us",
           ...mainScreenOptions,
         }}
-      />  
+      />
 
       <ProfileStackScreen.Screen
         name="Notification"
         component={NotificationScreen}
         options={{
-          title: 'Сповіщення',
+          title: "Notification",
           ...mainScreenOptions,
-          headerRight: () => null
+          headerRight: () => null,
         }}
-      /> 
+      />
 
       <ProfileStackScreen.Screen
         name="ChangeEmail"
         component={ChangeEmailScreen}
         options={{
-          title: 'Зміна ел. пошти',
+          title: "Change Email",
           ...mainScreenOptions,
         }}
-      /> 
+      />
 
       <ProfileStackScreen.Screen
         name="VerifyEmail"
         component={VerifyEmailScreen}
         options={{
-          title: 'Зміна ел. пошти',
+          title: "Change Email",
           ...mainScreenOptions,
         }}
-      /> 
-
+      />
     </ProfileStackScreen.Navigator>
-  )
-}
+  );
+};
