@@ -7,7 +7,7 @@ import Input from "../components/Input";
 import Layout from "../components/Layout";
 import { FontSize } from "../constants/fontSize";
 
-import { ProfileStackParamList } from "../navigation/StackNavigaton";
+import { ProfileStackParamList } from "../navigation/StackNavigation";
 
 interface VerifyEmailScreenProps {
   navigation: StackNavigationProp<ProfileStackParamList>;

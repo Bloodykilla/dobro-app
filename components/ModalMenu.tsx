@@ -1,19 +1,21 @@
 import React, { LegacyRef } from "react";
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, ScrollView } from "react-native";
+
 import RBSheet from "react-native-raw-bottom-sheet";
 
 interface ModalMenuProps {
   modalRef: LegacyRef<RBSheet> | null;
+  style?: {};
 }
 
-const ModalMenu: React.FC<ModalMenuProps> = ({ children, modalRef }) => {
-  const windowPorp = Dimensions.get("window");
+const ModalMenu: React.FC<ModalMenuProps> = ({ children, modalRef, style }) => {
+  const windowProp = Dimensions.get("window");
 
   return (
     <RBSheet
       ref={modalRef}
-      height={windowPorp.height / 2}
-      openDuration={380}
+      height={windowProp.height / 2}
+      openDuration={280}
       closeOnDragDown={true}
       closeOnPressMask={true}
       customStyles={{
@@ -25,13 +27,11 @@ const ModalMenu: React.FC<ModalMenuProps> = ({ children, modalRef }) => {
         },
       }}
     >
-      {children}
+      <ScrollView contentContainerStyle={[{ flex: 1 }, style]}>
+        {children}
+      </ScrollView>
     </RBSheet>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {},
-});
 
 export default ModalMenu;

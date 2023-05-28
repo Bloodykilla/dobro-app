@@ -1,5 +1,3 @@
 export const Api = {
-  url: 'http://charity-api.somee.com/api/',
-  auth: 'Auth',
-  customer: 'Customer'
-}
+  url: "http://localhost:1337",
+};

@@ -12,7 +12,7 @@ interface LogoutButtonProps {
 const LogoutButton: React.FC<LogoutButtonProps> = ({ buttonAction, style }) => {
   
   return (
-    <TouchableOpacity style={[styles.conntainer, style]} onPress={() => buttonAction()}>
+    <TouchableOpacity style={[styles.container, style]} onPress={() => buttonAction()}>
       <View style={styles.iconContainer}>
         <Icons name='logout' size={24} color={Colors.red} />
       </View>
@@ -24,7 +24,7 @@ const LogoutButton: React.FC<LogoutButtonProps> = ({ buttonAction, style }) => {
 }
 
 const styles = StyleSheet.create({
-  conntainer:{
+  container:{
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',

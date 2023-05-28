@@ -12,7 +12,7 @@ const HelpedMonth: React.FC<HelpedMonthProps> = ({ helped }) => {
   return (
     <View >
       <View>
-        <Text style={styles.title}>В цьому місяці допомогли:</Text>
+        <Text style={styles.title}>Helped in general</Text>
       </View>
       <View style={styles.helpContainer}>
         <View style={styles.sidePadding}>

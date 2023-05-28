@@ -9,7 +9,7 @@ interface BellProps {
 }
 
 const Bell: React.FC<BellProps> = ({ buttonAction, style }) => {
-  const [isUnhandled, setUnhadled] = useState(true);
+  const [isUnhandled, setUnhandled] = useState(true);
    
   return (
     <TouchableOpacity

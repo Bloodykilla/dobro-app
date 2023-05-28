@@ -8,8 +8,7 @@ import MenuItem from "../components/MenuItem";
 import { Colors } from "../constants/Colors";
 import { FontSize } from "../constants/fontSize";
 import { AppContext } from "../context/ContextProvider";
-import { PersonInfo } from "../models/Person";
-import { ProfileStackParamList } from "../navigation/StackNavigaton";
+import { ProfileStackParamList } from "../navigation/StackNavigation";
 
 interface ProfileScreenProps {
   navigation: StackNavigationProp<ProfileStackParamList>;
@@ -17,7 +16,7 @@ interface ProfileScreenProps {
 
 const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
   const { setAuth } = useContext(AppContext);
-  const [person, setPerson] = useState(PersonInfo);
+  const [person, setPerson] = useState();
 
   const logoutUserHandler = async () => {
     setAuth!(false);

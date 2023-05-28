@@ -4,15 +4,14 @@ import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import Layout from "../components/Layout";
 import PersonItem from "../components/PersonItem";
-import { PersonInfo } from "../models/Person";
-import { ProfileStackParamList } from "../navigation/StackNavigaton";
+import { ProfileStackParamList } from "../navigation/StackNavigation";
 
 interface SettingsScreenProps {
   navigation: StackNavigationProp<ProfileStackParamList>;
 }
 
 const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
-  const [info, setInfo] = useState(PersonInfo);
+  const [info, setInfo] = useState();
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [surname, setSurname] = useState("");

@@ -1,13 +1,14 @@
+import { ApolloProvider } from "@apollo/client";
 import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
 import { StatusBar } from "expo-status-bar";
-import React, { useContext, useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { AppContext, AppContextProvider } from "./context/ContextProvider";
+import React, { useState } from "react";
+import { SafeAreaView, StyleSheet } from "react-native";
+import client from "./api/ApolloClient/ApolloClient";
+import { ContextProvider } from "./context/ContextProvider";
 import Navigation from "./navigation/Navigation";
 
 export default function App() {
-  const { auth } = useContext(AppContext);
   const [fontLoaded, setFontLoaded] = useState(false);
 
   const fetchFonts = () => {
@@ -27,13 +28,19 @@ export default function App() {
   }
 
   return (
-    <AppContextProvider auth={auth}>
-      <View style={{ flex: 1 }}>
-        <StatusBar style="dark" />
-        <Navigation />
-      </View>
-    </AppContextProvider>
+    <ApolloProvider client={client}>
+      <ContextProvider auth={null}>
+        <SafeAreaView style={styles.appContainer}>
+          <StatusBar style="dark" />
+          <Navigation />
+        </SafeAreaView>
+      </ContextProvider>
+    </ApolloProvider>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  appContainer: {
+    flex: 1,
+  },
+});
