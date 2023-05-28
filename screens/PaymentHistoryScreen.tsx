@@ -1,95 +1,253 @@
+import moment from "moment";
 import React, { useEffect, useRef, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { FlatList, RefreshControl, StyleSheet, Text, View } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import RBSheet from "react-native-raw-bottom-sheet";
-import Button from "../components/Button";
-import Layout from "../components/Layout";
+import {
+  UserPaymentsQuery,
+  useUserPaymentQuery,
+  useUserPaymentsQuery,
+} from "../api/generated/schema";
 import ModalMenu from "../components/ModalMenu";
+import PaymentCheckout from "../components/PaymentCheckout";
 import PaymentItem from "../components/PaymentItem";
+import Preloader from "../components/Preloader";
 import RadioButton from "../components/RadioButton";
 import TextButton from "../components/TextButton";
 import { Colors } from "../constants/Colors";
-import { FontSize } from "../constants/fontSize";
 import { timeCodeOptions } from "../constants/TimeCodeOptions";
-import { PaymentItemModel } from "../models/PaymentItem";
+import { FontSize } from "../constants/fontSize";
+import { LoadMoreHandler } from "../functions/LoadMoreHandler/LoadMoreHandler";
+import { TimeRangeItemProps } from "../interfaces/TimeRange";
+
 interface PaymentHistoryScreenProps {}
 
+interface NeedProps {
+  id: string;
+  title: string;
+  firstName: string;
+  lastName: string;
+  sum: number;
+  date: string | null;
+}
+
+const PAGE_SIZE = 6;
+
 const PaymentHistoryScreen: React.FC<PaymentHistoryScreenProps> = ({}) => {
-  const openMenuRef = useRef<RBSheet | null>(null);
-  const [isActive, setActive] = useState<null | number>(0);
-  const [paymentItems, setPaymentItems] = useState(
-    PaymentItemModel.paymentsList
+  const [selectedPayment, setSelectedPayment] = useState<string>("");
+  const [needsCollection, setNeedsCollection] = useState<NeedProps[]>();
+  const [selectedDateRange, setSelectedDateRange] =
+    useState<TimeRangeItemProps>(timeCodeOptions[0]);
+
+  const { loading, error, data, refetch, networkStatus, fetchMore } =
+    useUserPaymentsQuery({
+      variables: {
+        start: 0,
+        limit: PAGE_SIZE,
+        sort:
+          selectedDateRange?.id === "0" || selectedDateRange?.id === "5"
+            ? "createdAt:desc"
+            : "createdAt:asc",
+        where: {
+          users_permissions_users: {
+            //@ts-ignore
+            id: {
+              in: ["1"],
+            },
+          },
+
+          //@ts-ignore
+          createdAt: {
+            gte: selectedDateRange?.from,
+            lte: selectedDateRange?.to,
+          },
+        },
+      },
+    });
+
+  const {
+    loading: loadingPayment,
+    error: errorPayment,
+    data: dataPayment,
+  } = useUserPaymentQuery({
+    variables: {
+      id: selectedPayment,
+    },
+  });
+
+  const menuRef = useRef<RBSheet | null>(null);
+  const singlePaymentMenuRef = useRef<RBSheet | null>(null);
+
+  const renderPaymentItem = ({ item }: any) => (
+    <TouchableOpacity onPress={() => singleSelectedPaymentHandler(item.id)}>
+      <PaymentItem
+        needLabel={item.title}
+        name={item.firstName}
+        surname={item.lastName}
+        sum={item.sum}
+        date={moment(item.date).format("DD MMMM YYYY")}
+      />
+    </TouchableOpacity>
   );
 
+  const singleSelectedPaymentHandler = (id: string) => {
+    setSelectedPayment(id);
+    singlePaymentMenuRef?.current?.open();
+  };
+
   const openMenuHandler = () => {
-    openMenuRef?.current?.open();
+    menuRef?.current?.open();
   };
 
-  const itemTapHandler = (id: number) => {
-    setActive(id);
+  const itemTapHandler = (item: TimeRangeItemProps) => {
+    menuRef?.current?.close();
+    setSelectedDateRange(item);
   };
 
-  const setActiveOptionHandler = () => {
-    openMenuRef?.current?.close();
+  const fetchMorePaymentsHandler = () => {
+    const length = data?.userPayments?.data?.length || 0;
+    const total = data?.userPayments?.meta?.pagination?.total;
+
+    if (length === total) return;
+
+    setTimeout(() => {
+      LoadMoreHandler<UserPaymentsQuery>(length, PAGE_SIZE, fetchMore);
+    }, 500);
   };
 
-  useEffect(() => {});
+  useEffect(() => {
+    if (data?.userPayments?.data?.length! > 0) {
+      const acc: NeedProps[] = [];
+      data?.userPayments?.data?.forEach((el) => {
+        acc.push({
+          id: el?.id!,
+          title: el?.attributes?.persons_needs?.data[0]?.attributes?.title!,
+          firstName:
+            el?.attributes?.persons_needs?.data[0]?.attributes?.needy_person
+              ?.data?.attributes?.firstName!,
+          lastName:
+            el?.attributes?.persons_needs?.data[0]?.attributes?.needy_person
+              ?.data?.attributes?.lastName!,
+          sum: el?.attributes?.amount!,
+          date: el?.attributes?.createdAt
+            ? moment(el?.attributes?.createdAt).format("DD MMMM YYYY")
+            : null,
+        });
+      });
+
+      setNeedsCollection(acc);
+    }
+  }, [data?.userPayments]);
+
+  useEffect(() => {
+    refetch();
+  }, [selectedDateRange.id]);
 
   return (
-    <Layout>
-      <View style={styles.container}>
-        <View style={styles.textButtonContainer}>
-          <TextButton
-            text="Обрати період"
-            buttonAction={() => openMenuHandler()}
-          />
-          <ModalMenu modalRef={openMenuRef}>
-            <View style={{ paddingHorizontal: 32, marginTop: 30, flex: 1 }}>
-              {timeCodeOptions.map((item, id) => (
-                <RadioButton
-                  key={id}
-                  value={item.value}
-                  label={item.label}
-                  isActive={isActive === id ? true : false}
-                  onSelect={() => itemTapHandler(id)}
-                />
-              ))}
-              <Button
-                style={styles.filterButton}
-                label="Фільтр"
-                buttonAction={() => setActiveOptionHandler()}
+    <View style={styles.layout}>
+      {loading ? (
+        <Preloader />
+      ) : (
+        <View style={styles.container}>
+          <View style={[styles.textButtonContainer, styles.screenContainer]}>
+            <TextButton
+              text="Chose date"
+              buttonAction={() => openMenuHandler()}
+            />
+            <ModalMenu style={{ paddingHorizontal: 32 }} modalRef={menuRef}>
+              <View style={{ marginVertical: 30, flex: 1 }}>
+                {timeCodeOptions.map((item, id) => (
+                  <RadioButton
+                    key={id}
+                    value={+item.id}
+                    label={item.label}
+                    isActive={+selectedDateRange.id === id ? true : false}
+                    onSelect={() => itemTapHandler(item)}
+                  />
+                ))}
+                {/* <Button
+                  style={styles.filterButton}
+                  label="Filter"
+                  buttonAction={() => closeDateRangeMenuHandler()}
+                /> */}
+              </View>
+            </ModalMenu>
+          </View>
+          {needsCollection?.length! > 0 ? (
+            <>
+              <FlatList
+                data={needsCollection}
+                keyExtractor={(_, index) => index.toString()}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={networkStatus === 4}
+                    onRefresh={refetch}
+                  />
+                }
+                style={styles.screenContainer}
+                renderItem={renderPaymentItem}
+                onEndReached={() => fetchMorePaymentsHandler()}
               />
+              <ModalMenu
+                style={{ paddingHorizontal: 16 }}
+                modalRef={singlePaymentMenuRef}
+              >
+                {!loadingPayment && (
+                  <PaymentCheckout
+                    date={dataPayment?.userPayment?.data?.attributes?.createdAt}
+                    id={dataPayment?.userPayment?.data?.id!}
+                    needTitle={
+                      dataPayment?.userPayment?.data?.attributes?.persons_needs
+                        ?.data[0]?.attributes?.title!
+                    }
+                    firstName={
+                      dataPayment?.userPayment?.data?.attributes?.persons_needs
+                        ?.data[0]?.attributes?.needy_person?.data?.attributes
+                        ?.firstName!
+                    }
+                    lastName={
+                      dataPayment?.userPayment?.data?.attributes?.persons_needs
+                        ?.data[0]?.attributes?.needy_person?.data?.attributes
+                        ?.lastName!
+                    }
+                    total={dataPayment?.userPayment?.data?.attributes?.amount!}
+                  />
+                )}
+              </ModalMenu>
+            </>
+          ) : (
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text style={{ color: Colors.textGrey }}>
+                Payments are empty.
+              </Text>
             </View>
-          </ModalMenu>
+          )}
         </View>
-        <View>
-          <PaymentItem
-            needLabel={"Лікування альцгеймеру"}
-            name={"Джо"}
-            surname={"Байден"}
-            patronymic={""}
-            sum={200}
-            date={"12/01/2023"}
-          />
-          <PaymentItem
-            needLabel={"Лікування альцгеймеру"}
-            name={"Джо"}
-            surname={"Байден"}
-            patronymic={""}
-            sum={400}
-            date={"12/01/2023"}
-          />
-        </View>
-      </View>
-    </Layout>
+      )}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  layout: {
+    backgroundColor: Colors.white,
+    flex: 1,
+  },
+  screenContainer: {
+    paddingHorizontal: 16,
+  },
   container: {
-    marginVertical: 15,
+    flex: 1,
+    marginTop: 15,
   },
   textButtonContainer: {
-    marginBottom: 15,
+    paddingBottom: 15,
     alignSelf: "flex-end",
   },
   noPaymentText: {
@@ -98,7 +256,7 @@ const styles = StyleSheet.create({
     fontSize: FontSize.label,
   },
   filterButton: {
-    marginTop: "15%",
+    marginTop: "auto",
   },
 });
 

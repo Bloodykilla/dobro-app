@@ -1,91 +1,93 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Colors } from '../constants/Colors';
-import { FontSize } from '../constants/fontSize';
-import ProgressBar from './ProgressBar';
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { Colors } from "../constants/Colors";
+import { FontSize } from "../constants/fontSize";
+import ProgressBar from "./ProgressBar";
 
 interface NeedyCardProps {
-  title: string | undefined;
-  rest: number | undefined;
-  currentProgress: number | undefined;
+  title: string;
+  rest: number;
+  currentProgress: string;
 }
 
-const NeedyCard: React.FC<NeedyCardProps> = ({ title, rest, currentProgress }) => {
-  
+const NeedyCard: React.FC<NeedyCardProps> = ({
+  title,
+  rest,
+  currentProgress,
+}) => {
   return (
     <>
-    {rest && rest > 0 ? (
-      <View style={styles.container}>
-        <View>
-          <Text style={styles.title}>{title}</Text>
-        </View>
-        <View>
-          <Text style={styles.subTitle}>Залишилося зібрати</Text>
-        </View>
-        <View>
-          <Text style={styles.rest}>{rest} грн.</Text>
+      {rest && rest > 0 ? (
+        <View style={styles.container}>
+          <View>
+            <Text style={styles.title}>{title}</Text>
+          </View>
+          <View>
+            <Text style={styles.subTitle}>Rest for complete</Text>
+          </View>
+          <View>
+            <Text style={styles.rest}>{rest}$</Text>
             <ProgressBar progress={currentProgress} style={styles.progress} />
+          </View>
         </View>
-      </View>
-    )
-    :
-      <View style={styles.oulineContainer}>
-        <View>
-          <Text style={styles.outlineTitle}>Активний збір відсутній.</Text>
+      ) : (
+        <View style={styles.outlineContainer}>
+          <View>
+            <Text style={styles.outlineTitle}>Active Finding is missed.</Text>
+          </View>
         </View>
-      </View>
-    }
+      )}
     </>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
+    width: "100%",
     borderRadius: 8,
-    flexDirection: 'column',
+    flexDirection: "column",
     backgroundColor: Colors.black,
-    justifyContent: 'center',
+    justifyContent: "center",
     paddingVertical: 38,
-    paddingHorizontal: 17
+    paddingHorizontal: 17,
   },
-  oulineContainer: {
-    width: '100%',
+  outlineContainer: {
+    width: "100%",
     borderRadius: 8,
-    flexDirection: 'column',
-    justifyContent: 'center',
+    flexDirection: "column",
+    justifyContent: "center",
     paddingVertical: 38,
     paddingHorizontal: 17,
   },
   outlineTitle: {
-    fontWeight: '400',
+    fontWeight: "400",
     fontSize: FontSize.label,
     color: Colors.textGrey,
-    textAlign: 'center'
+    textAlign: "center",
   },
   title: {
-    fontWeight: '400',
+    fontWeight: "400",
     fontSize: FontSize.big,
     color: Colors.white,
-    textAlign: 'center'
+    textAlign: "center",
   },
   subTitle: {
-    fontWeight: '500',
+    fontWeight: "500",
     fontSize: FontSize.middle,
     color: Colors.white,
-    textAlign: 'center',
-    paddingTop: 10
+    textAlign: "center",
+    paddingTop: 10,
   },
   rest: {
     paddingTop: 10,
-    fontWeight: '600',
+    fontWeight: "600",
     fontSize: FontSize.large,
     color: Colors.white,
-    textAlign: 'center'
+    textAlign: "center",
   },
   progress: {
-    paddingTop: 15
-  }
+    paddingTop: 15,
+  },
 });
 
 export default NeedyCard;

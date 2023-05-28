@@ -1,0 +1,45 @@
+query UserPayment($id: ID!) {
+  userPayment(id: $id) {
+    data {
+      id
+      attributes {
+        createdAt
+        amount
+        users_permissions_users {
+          data {
+            id
+            attributes {
+              firstName
+              lastName
+            }
+          }
+        }
+        persons_needs {
+          data {
+            id
+            attributes {
+              title
+              needy_person {
+                data {
+                  id
+                  attributes {
+                    firstName
+                    lastName
+                    thumbnail {
+                      data {
+                        id
+                        attributes {
+                          url
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

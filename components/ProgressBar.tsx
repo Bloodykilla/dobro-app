@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Colors } from '../constants/Colors';
 
 interface ProgressBarProps {
-  progress: number | undefined,
+  progress: string | undefined,
   style?: {};
 }
 

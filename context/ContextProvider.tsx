@@ -1,25 +1,32 @@
-import React, { createContext, PropsWithChildren, useState } from "react";
+import React, {
+  createContext,
+  Dispatch,
+  PropsWithChildren,
+  SetStateAction,
+  useState
+} from "react";
 
 export interface IAppContext {
-  auth: boolean;
-  setAuth?: (value: boolean) => void;
+  auth: boolean | null;
+  setAuth?: Dispatch<SetStateAction<boolean | null>> | null;
 }
 
 export const AppContext = createContext<IAppContext>({
-  auth: false,
+  auth: null,
+  setAuth: null,
 });
 
-export const AppContextProvider = ({
+export const ContextProvider = ({
   auth,
   children,
 }: PropsWithChildren<IAppContext>): JSX.Element => {
-  const [authState, setAuthState] = useState<boolean>(auth);
+  const [authState, setAuthState] = useState<boolean | null>(false);
   const setAuth = (value: boolean) => {
     setAuthState(value);
   };
 
   return (
-    <AppContext.Provider value={{ auth: authState, setAuth }}>
+    <AppContext.Provider value={{ auth: authState, setAuth: setAuthState }}>
       {children}
     </AppContext.Provider>
   );

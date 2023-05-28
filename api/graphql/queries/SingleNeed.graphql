@@ -1,0 +1,32 @@
+query SingleNeed($id: ID!) {
+  personsNeed(id: $id) {
+    data {
+      id
+      attributes {
+        title
+        description
+        requestedSum
+        currentSum
+        isActive
+        createdAt
+        needy_person {
+          data {
+            id
+            attributes {
+              lastName
+              firstName
+              thumbnail {
+                data {
+                  id
+                  attributes {
+                    url
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,25 +1,20 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import Layout from '../components/Layout';
-import Plug from '../components/Plug';
+import React from "react";
+import { StyleSheet } from "react-native";
+import Layout from "../components/Layout";
+import Plug from "../components/Plug";
 
-interface DonateScreenProps {
-
-}
+interface DonateScreenProps {}
 
 const DonateScreen: React.FC<DonateScreenProps> = ({}) => {
-  
   return (
-    <Layout style={{ justifyContent: 'center'}}>
+    <Layout style={{ justifyContent: "center" }}>
       <Plug />
     </Layout>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  container:{
-
-  },
+  container: {},
 });
 
 export default DonateScreen;

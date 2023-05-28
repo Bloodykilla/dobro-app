@@ -1,0 +1,42 @@
+query UserPayments(
+  $where: UserPaymentFiltersInput
+  $start: Int
+  $limit: Int
+  $sort: String
+) {
+  userPayments(
+    filters: $where
+    pagination: { start: $start, limit: $limit }
+    sort: [$sort]
+  ) {
+    data {
+      id
+      attributes {
+        createdAt
+        amount
+        persons_needs {
+          data {
+            id
+            attributes {
+              title
+              needy_person {
+                data {
+                  id
+                  attributes {
+                    firstName
+                    lastName
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    meta {
+      pagination {
+        total
+      }
+    }
+  }
+}

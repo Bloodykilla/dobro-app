@@ -1,0 +1,15 @@
+query FoodBasket {
+	foodBasket {
+		data {
+			id
+			attributes {
+				items {
+					id
+					name
+					price
+					quantity
+				}
+			}
+		}
+	}
+}

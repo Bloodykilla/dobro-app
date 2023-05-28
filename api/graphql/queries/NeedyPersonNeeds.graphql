@@ -1,0 +1,15 @@
+query NeedyPersonNeeds($where: PersonsNeedFiltersInput) {
+  personsNeeds(filters: $where) {
+    data {
+      id
+      attributes {
+        title
+        description
+        requestedSum
+        currentSum
+        isActive
+        createdAt
+      }
+    }
+  }
+}
